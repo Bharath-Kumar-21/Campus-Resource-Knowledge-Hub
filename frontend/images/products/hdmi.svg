@@ -1,0 +1,21 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <rect width="400" height="300" fill="#F8FCF9"/>
+  <circle cx="200" cy="150" r="110" fill="#EEF9F5"/>
+  <!-- Coiled Braided Cable -->
+  <ellipse cx="200" cy="165" rx="85" ry="45" fill="none" stroke="#2B313E" stroke-width="14" stroke-dasharray="4,2"/>
+  <ellipse cx="200" cy="155" rx="75" ry="40" fill="none" stroke="#3D4556" stroke-width="12" stroke-dasharray="3,2"/>
+  <!-- HDMI Connector 1 -->
+  <g transform="translate(100, 75) rotate(-25)">
+    <rect x="0" y="0" width="28" height="48" rx="5" fill="#20242D"/>
+    <rect x="5" y="48" width="18" height="18" rx="2" fill="#F5C042"/>
+    <rect x="8" y="66" width="12" height="4" rx="1" fill="#D4A028"/>
+    <text x="6" y="28" font-family="-apple-system, sans-serif" font-size="6" font-weight="700" fill="#79C9B0">4K HDMI</text>
+  </g>
+  <!-- HDMI Connector 2 -->
+  <g transform="translate(265, 95) rotate(30)">
+    <rect x="0" y="0" width="28" height="48" rx="5" fill="#20242D"/>
+    <rect x="5" y="48" width="18" height="18" rx="2" fill="#F5C042"/>
+    <rect x="8" y="66" width="12" height="4" rx="1" fill="#D4A028"/>
+    <text x="6" y="28" font-family="-apple-system, sans-serif" font-size="6" font-weight="700" fill="#6C8EF5">60Hz</text>
+  </g>
+</svg>

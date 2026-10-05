@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRKH — Campus Resource & Knowledge Hub</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: header('home')}"></div>
+
+    <!-- APPLE LIQUID GLASS HERO SECTION -->
+    <section class="hero-clean">
+        <div class="container">
+            <div class="hero-layout">
+                <!-- Left Hero Text & CTA -->
+                <div>
+                    <div class="hero-pill-tag">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        <span>Verified Student-Only Community</span>
+                    </div>
+
+                    <h1 class="hero-heading">
+                        Find What You Need.<br>
+                        <span>Share What You Have.</span>
+                    </h1>
+
+                    <p class="hero-subheading">
+                        Exchange textbooks, scientific calculators, lab gear, and study materials with fellow students. Zero rental costs, verified QR handovers, and trusted campus reputations.
+                    </p>
+
+                    <div class="hero-cta-group">
+                        <a th:href="@{/resources}" class="btn btn-primary btn-lg">
+                            <span>Browse Resources</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </a>
+                        <a th:href="@{/resources/new}" class="btn btn-secondary btn-lg">
+                            <span>Post a Resource</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        </a>
+                    </div>
+
+                    <!-- Trust indicators -->
+                    <div class="hero-trust-row">
+                        <div class="hero-trust-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span>100% Free Borrowing</span>
+                        </div>
+                        <div class="hero-trust-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span>Single-Use QR Pickup</span>
+                        </div>
+                        <div class="hero-trust-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span>Private Knowledge Vault</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Hero Floating Product Cards (Liquid Glass) -->
+                <div class="hero-visual-stack">
+                    <!-- Floating Card 1: Calculator -->
+                    <div class="hero-float-card">
+                        <img src="https://images.unsplash.com/photo-1594980596870-8aa52a78d8cd?auto=format&fit=crop&w=400&q=80" 
+                             data-category="CALCULATOR" 
+                             alt="Casio Scientific Calculator" 
+                             class="hero-float-thumb">
+                        <div style="flex:1;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.2rem;">
+                                <span style="font-size:0.7rem; font-weight:700; color:var(--secondary); text-transform:uppercase;">CALCULATOR</span>
+                                <span style="font-size:0.75rem; font-weight:700; color:#F59E0B;">★ 4.9</span>
+                            </div>
+                            <h4 style="font-size:0.92rem; font-weight:700; margin-bottom:0.25rem;">Scientific Calculator - Casio fx-991EX</h4>
+                            <div style="font-size:0.78rem; color:var(--text-muted); display:flex; gap:0.6rem;">
+                                <span>📍 Tech Park Block C</span>
+                                <span style="color:#059669; font-weight:600;">● Available</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Floating Card 2: DBMS Book -->
+                    <div class="hero-float-card" style="margin-left: 1.5rem;">
+                        <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80" 
+                             data-category="TEXTBOOK" 
+                             alt="Database Systems Textbook" 
+                             class="hero-float-thumb">
+                        <div style="flex:1;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.2rem;">
+                                <span style="font-size:0.7rem; font-weight:700; color:var(--primary); text-transform:uppercase;">TEXTBOOK</span>
+                                <span style="font-size:0.75rem; font-weight:700; color:#F59E0B;">★ 4.8</span>
+                            </div>
+                            <h4 style="font-size:0.92rem; font-weight:700; margin-bottom:0.25rem;">Database System Concepts (7th Edition)</h4>
+                            <div style="font-size:0.78rem; color:var(--text-muted); display:flex; gap:0.6rem;">
+                                <span>📍 Central Library</span>
+                                <span style="color:#059669; font-weight:600;">● Available</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Floating Card 3: Arduino Kit -->
+                    <div class="hero-float-card">
+                        <img src="https://images.unsplash.com/photo-1553406830-ef2513450d76?auto=format&fit=crop&w=400&q=80" 
+                             data-category="LAB_EQUIPMENT" 
+                             alt="Arduino Uno Kit" 
+                             class="hero-float-thumb">
+                        <div style="flex:1;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.2rem;">
+                                <span style="font-size:0.7rem; font-weight:700; color:var(--mint); text-transform:uppercase;">LAB EQUIPMENT</span>
+                                <span style="font-size:0.75rem; font-weight:700; color:#F59E0B;">★ 4.9</span>
+                            </div>
+                            <h4 style="font-size:0.92rem; font-weight:700; margin-bottom:0.25rem;">Arduino Uno Starter Kit with Sensors</h4>
+                            <div style="font-size:0.78rem; color:var(--text-muted); display:flex; gap:0.6rem;">
+                                <span>📍 Robotics Lab</span>
+                                <span style="color:#059669; font-weight:600;">● Available</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN PRODUCT DISCOVERY SECTION -->
+    <main class="container" style="padding-top: 3.5rem;">
+        <!-- Section Header -->
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
+            <div>
+                <div style="font-size:0.8rem; font-weight:700; color:var(--primary); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:0.25rem;">
+                    Campus Marketplace
+                </div>
+                <h2 style="font-size:1.85rem; font-weight:800; letter-spacing:-0.02em;">Featured Campus Resources</h2>
+                <p style="color:var(--text-muted); font-size:0.92rem;">Recently shared equipment and books ready for peer pickup today.</p>
+            </div>
+            <a th:href="@{/resources}" class="btn btn-soft-blue">
+                <span>View All Resources</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+        </div>
+
+        <!-- 4-Column Product Grid (Apple Liquid Glass) -->
+        <div class="product-grid">
+            <div th:each="r : ${recentResources}" 
+                 class="product-card" 
+                 th:data-id="${r.id}"
+                 th:data-title="${r.title}"
+                 th:data-category="${r.category.name()}"
+                 th:data-location="${r.location}"
+                 th:data-owner="${r.ownerName}"
+                 th:data-rep="${r.ownerReputation}"
+                 th:data-dates="${r.availabilityFrom} + ' to ' + ${r.availabilityTo}"
+                 th:data-desc="${r.description}">
+                
+                <!-- Product Image Container (Uniform 220px Height & Containment) -->
+                <div class="product-card-media">
+                    <div class="product-badges-bar">
+                        <div>
+                            <span th:if="${r.sharingType == 'ITEM_EXCHANGE'}" class="badge-exchange item-swap">
+                                🔄 Item Exchange
+                            </span>
+                            <span th:if="${r.sharingType == 'SKILL_SWAP'}" class="badge-exchange skill-swap">
+                                💡 Skill Swap
+                            </span>
+                            <span th:if="${r.sharingType == 'SECURITY_PLEDGE'}" class="badge-exchange pledge">
+                                🛡️ Refundable Pledge
+                            </span>
+                            <span th:if="${r.sharingType == null or r.sharingType == 'FREE_BORROW'}" class="badge-exchange free-borrow">
+                                🌿 Free Borrow
+                            </span>
+                        </div>
+                        <div>
+                            <span class="badge-condition" th:text="${r.itemCondition != null ? r.itemCondition : 'Good'}">
+                                Good
+                            </span>
+                        </div>
+                    </div>
+
+                    <img th:src="${r.imageUrl != null and !r.imageUrl.isEmpty() ? r.imageUrl : '/images/products/default.svg'}" 
+                         th:data-category="${r.category.name()}"
+                         th:alt="${r.title}" 
+                         class="product-card-img"
+                         loading="lazy"
+                         onerror="CRKH.handleImageFallback(this)">
+                </div>
+
+                <!-- Product Card Body with Flex Column -->
+                <div class="product-card-body">
+                    <div class="product-card-meta">
+                        <span class="product-category-text" th:text="${r.category}">TEXTBOOK</span>
+                        <div class="product-rating">
+                            <span>★</span>
+                            <span th:text="${r.ownerReputation}">95</span>
+                        </div>
+                    </div>
+
+                    <h3 class="product-card-title">
+                        <a th:href="@{'/resources/' + ${r.id}}" th:text="${r.title}">Resource Title</a>
+                    </h3>
+
+                    <!-- Uniform Height Exchange Box -->
+                    <div class="product-exchange-box">
+                        <div class="exchange-label">
+                            <span th:if="${r.sharingType == 'ITEM_EXCHANGE'}">🔄 Swap Wanted:</span>
+                            <span th:if="${r.sharingType == 'SKILL_SWAP'}">💡 Desired Peer Help:</span>
+                            <span th:if="${r.sharingType == 'SECURITY_PLEDGE'}">🛡️ Deposit Term:</span>
+                            <span th:if="${r.sharingType == null or r.sharingType == 'FREE_BORROW'}">🌿 Lender Note:</span>
+                        </div>
+                        <div class="exchange-value" th:text="${r.exchangePreference != null ? r.exchangePreference : 'Free community loan. Return on time (+5 Reputation).'}">
+                            Terms
+                        </div>
+                    </div>
+
+                    <!-- Details Row -->
+                    <div class="product-card-details" style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span>📍 <span th:text="${r.location}">Location</span></span>
+                            <span>Shared by <strong th:text="${r.ownerName}">Student</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Footer Pinned to Bottom -->
+                    <div class="product-card-footer">
+                        <a th:href="@{'/resources/' + ${r.id}}" class="btn btn-secondary btn-sm" style="flex:1; text-align:center;">
+                            Details
+                        </a>
+                        <a th:href="@{'/resources/' + ${r.id}}" class="btn btn-primary btn-sm" style="flex:1; text-align:center; font-weight:700;">
+                            <span th:if="${r.sharingType == 'ITEM_EXCHANGE'}">Swap →</span>
+                            <span th:if="${r.sharingType != 'ITEM_EXCHANGE'}">Request →</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HOW CRKH WORKS (4 LIQUID GLASS CARDS) -->
+        <div style="margin-top: 5rem;">
+            <div style="text-align:center; max-width:650px; margin:0 auto 2.5rem;">
+                <div style="font-size:0.8rem; font-weight:700; color:var(--secondary); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:0.25rem;">
+                    Simple & Secure Exchange
+                </div>
+                <h2 style="font-size:1.85rem; font-weight:800; letter-spacing:-0.02em;">How Campus Resource Sharing Works</h2>
+                <p style="color:var(--text-muted); font-size:0.92rem;">Four quick steps from discovering equipment to completing physical handover on campus.</p>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-box" style="flex-direction:column; align-items:flex-start; text-align:left;">
+                    <div class="stat-box-icon" style="background:var(--primary-light); color:var(--primary);">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </div>
+                    <div style="font-size:1rem; font-weight:700; margin-top:0.4rem;">1. Discover or Request</div>
+                    <p style="font-size:0.82rem; color:var(--text-muted); margin-top:0.2rem;">Search available calculators, books, and cables or post a needed request.</p>
+                </div>
+
+                <div class="stat-box" style="flex-direction:column; align-items:flex-start; text-align:left;">
+                    <div class="stat-box-icon" style="background:var(--secondary-light); color:var(--secondary);">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <div style="font-size:1rem; font-weight:700; margin-top:0.4rem;">2. Owner Approves</div>
+                    <p style="font-size:0.82rem; color:var(--text-muted); margin-top:0.2rem;">Resource owner reviews your request and agrees on a convenient campus spot.</p>
+                </div>
+
+                <div class="stat-box" style="flex-direction:column; align-items:flex-start; text-align:left;">
+                    <div class="stat-box-icon" style="background:var(--mint-light); color:var(--mint);">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    </div>
+                    <div style="font-size:1rem; font-weight:700; margin-top:0.4rem;">3. Verify with QR</div>
+                    <p style="font-size:0.82rem; color:var(--text-muted); margin-top:0.2rem;">Single-use cryptographic QR code proves physical pickup with zero disputes.</p>
+                </div>
+
+                <div class="stat-box" style="flex-direction:column; align-items:flex-start; text-align:left;">
+                    <div class="stat-box-icon" style="background:var(--peach-light); color:var(--peach-hover);">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    </div>
+                    <div style="font-size:1rem; font-weight:700; margin-top:0.4rem;">4. Return & Earn Trust</div>
+                    <p style="font-size:0.82rem; color:var(--text-muted); margin-top:0.2rem;">Return on time to build campus reputation score and unlock priority requests.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- QUICK VIEW MODAL (LIQUID GLASS) -->
+    <div id="quickViewModal" class="modal-overlay" onclick="if(event.target === this) closeModal('quickViewModal');">
+        <div class="modal-card">
+            <button class="modal-close-btn" onclick="closeModal('quickViewModal')">✕</button>
+            <div style="display:grid; grid-template-columns:140px 1fr; gap:1.25rem; margin-bottom:1.25rem;">
+                <img id="qvImg" src="" alt="Resource" style="width:100%; aspect-ratio:1; object-fit:cover; border-radius:var(--radius-md); border:1px solid rgba(255,255,255,0.95); box-shadow:var(--shadow-liquid-sm);">
+                <div>
+                    <span id="qvCategory" class="product-category-text">CATEGORY</span>
+                    <h3 id="qvTitle" style="font-size:1.15rem; font-weight:800; margin:0.25rem 0;">Resource Title</h3>
+                    <div style="font-size:0.82rem; color:var(--text-muted); margin-bottom:0.25rem;">
+                        📍 <span id="qvLocation">Location</span>
+                    </div>
+                    <div style="font-size:0.82rem; color:var(--text-muted);">
+                        Owner: <span id="qvOwner">Student</span>
+                    </div>
+                    <div style="font-size:0.78rem; color:#059669; font-weight:600; margin-top:0.25rem;">
+                        📅 Available: <span id="qvDates">Dates</span>
+                    </div>
+                </div>
+            </div>
+
+            <p id="qvDesc" style="font-size:0.85rem; color:var(--text-muted); line-height:1.5; margin-bottom:1.25rem; background:rgba(255,255,255,0.6); padding:0.75rem; border-radius:var(--radius-sm); border:1px solid rgba(255,255,255,0.9);">
+                Description
+            </p>
+
+            <form th:action="@{/borrowings/create}" method="post">
+                <input type="hidden" id="qvResourceId" name="resourceId" value="">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:0.75rem;">
+                    <div>
+                        <label class="form-label" style="font-size:0.78rem;">Borrow From</label>
+                        <input type="date" name="startDate" class="form-control" style="padding:0.4rem 0.6rem;" required>
+                    </div>
+                    <div>
+                        <label class="form-label" style="font-size:0.78rem;">Return By</label>
+                        <input type="date" name="endDate" class="form-control" style="padding:0.4rem 0.6rem;" required>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom:1rem;">
+                    <label class="form-label" style="font-size:0.78rem;">Purpose / Note for Owner</label>
+                    <input type="text" name="notes" class="form-control" placeholder="e.g. Needed for semester exams preparation..." style="padding:0.45rem 0.75rem;">
+                </div>
+                <div style="display:flex; gap:0.75rem;">
+                    <a id="qvDetailLink" href="#" class="btn btn-secondary" style="flex:1;">Full Details Page</a>
+                    <button type="submit" class="btn btn-primary" style="flex:1;">Send Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SITE FOOTER -->
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div style="display:flex; align-items:center; gap:0.75rem;">
+                <div class="brand-icon-box" style="width:34px; height:34px; font-size:0.85rem;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path></svg>
+                </div>
+                <div>
+                    <div style="font-weight:800; font-size:0.95rem;">CRKH Hub</div>
+                    <div style="font-size:0.75rem; color:var(--text-subtle);">Campus Resource & Knowledge Hub</div>
+                </div>
+            </div>
+            <div>
+                © 2026 Campus Resource & Knowledge Hub. Peer-to-peer campus exchange.
+            </div>
+        </div>
+    </footer>
+
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

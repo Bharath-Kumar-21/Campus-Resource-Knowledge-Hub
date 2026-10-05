@@ -1,0 +1,39 @@
+# Compiled class files & build artifacts
+**/target/
+**/*.class
+**/*.jar
+**/*.war
+**/*.ear
+**/*.nar
+
+# Uploads
+uploads/documents/*
+!uploads/documents/.gitkeep
+uploads/products/*
+!uploads/products/.gitkeep
+backend/uploads/documents/*
+!backend/uploads/documents/.gitkeep
+backend/uploads/products/*
+!backend/uploads/products/.gitkeep
+
+# Logs and runtime databases
+*.log
+*.err
+*.pid
+
+# IDE and Editor files
+.idea/
+*.iml
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment variables
+.env
+.env.local

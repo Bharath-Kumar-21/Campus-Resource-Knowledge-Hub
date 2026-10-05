@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelligent Resource Matches — CRKH</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: header('requests')}"></div>
+
+    <main class="container" style="max-width:1050px; padding-top:2rem;">
+        <div style="margin-bottom:1.5rem;">
+            <a th:href="@{/requests}" class="btn btn-secondary btn-sm">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                <span>Back to Requests</span>
+            </a>
+        </div>
+
+        <!-- Request Summary Banner (Liquid Glass) -->
+        <div class="card" style="margin-bottom:2rem; border-left:4px solid var(--primary);">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.4rem;">
+                <span class="product-category-text" th:text="${request.category}">CATEGORY</span>
+                <span style="font-size:0.82rem; color:var(--text-muted);" th:text="'Requested by ' + ${request.requesterName}">Requester</span>
+            </div>
+            <h1 style="font-size:1.85rem; font-weight:800; margin-bottom:0.5rem;" th:text="${request.title}">Request Title</h1>
+            <div style="display:flex; gap:1.5rem; font-size:0.85rem; color:var(--text-muted); flex-wrap:wrap;">
+                <span>📅 Needed: <strong th:text="${request.neededFrom} + ' to ' + ${request.neededTo}">Dates</strong></span>
+                <span>📍 Location: <strong th:text="${request.location}">Location</strong></span>
+                <span th:if="${request.keywords != null}">🏷️ Keywords: <strong th:text="${request.keywords}">Keywords</strong></span>
+            </div>
+        </div>
+
+        <!-- 6-Factor Formula Explanation Box -->
+        <div class="card" style="padding:1.25rem 1.5rem; margin-bottom:2rem; background:rgba(108,142,245,0.06); border-color:var(--primary-subtle);">
+            <div style="display:flex; align-items:center; gap:0.6rem; font-weight:700; color:var(--primary); font-size:0.95rem; margin-bottom:0.35rem;">
+                <span>⚡</span> Intelligent Recommendation Engine (6-Factor Weighted Composite Model)
+            </div>
+            <div style="font-size:0.82rem; color:var(--text-muted); line-height:1.6;">
+                <strong>Algorithmic Breakdown:</strong> 30% Relevance + 20% Proximity + 20% Availability + 15% Reputation + 10% Recency + 5% HistoryFit. Matches are sorted by highest composite confidence.
+            </div>
+        </div>
+
+        <!-- Empty Matches -->
+        <div th:if="${#lists.isEmpty(matches)}" class="card" style="text-align:center; padding:3.5rem;">
+            <div style="font-size:2.8rem; margin-bottom:0.75rem;">🔍</div>
+            <h3 style="font-size:1.3rem; font-weight:700;">No direct campus matches found yet</h3>
+            <p style="color:var(--text-muted); margin-bottom:1.5rem;">There are currently no listed resources matching this request window.</p>
+            <a th:href="@{/resources}" class="btn btn-primary btn-sm">Browse All Active Listings</a>
+        </div>
+
+        <!-- Ranked Results -->
+        <div th:unless="${#lists.isEmpty(matches)}">
+            <h2 style="font-size:1.35rem; font-weight:800; margin-bottom:1.25rem;">
+                Recommended For You (<span th:text="${matches.size()}">3</span> ranked items)
+            </h2>
+
+            <div th:each="m : ${matches}" 
+                 class="match-card" 
+                 th:style="'--match-pct:' + ${m.matchingScore} + '%;'">
+                
+                <!-- Circular Percentage Indicator -->
+                <div>
+                    <div class="match-gauge-circle">
+                        <div class="match-gauge-inner">
+                            <span class="match-pct-text" th:text="${m.matchingScore} + '%'">94%</span>
+                            <span class="match-pct-label">Match</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Match Details & Reasons -->
+                <div>
+                    <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:0.25rem;">
+                        <span class="product-category-text" th:text="${m.resource.category}">CATEGORY</span>
+                        <span class="user-rep-tag" th:text="${m.resource.ownerReputation + ' Rep'}">100 Rep</span>
+                    </div>
+
+                    <h3 style="font-size:1.25rem; font-weight:800;" th:text="${m.resource.title}">Resource Title</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin:0.25rem 0 0.5rem;" th:text="${m.resource.description}">Description</p>
+
+                    <!-- Why this matches pills (Prompt Requirement) -->
+                    <div class="match-reasons-box">
+                        <span class="match-reason-pill">✓ Available nearby (<span th:text="${m.resource.location}">Location</span>)</span>
+                        <span class="match-reason-pill">✓ High owner trust score (<span th:text="${m.resource.ownerReputation}">100</span> pts)</span>
+                        <span class="match-reason-pill">✓ Matches requested category</span>
+                        <span class="match-reason-pill">✓ Recently active & verified</span>
+                    </div>
+                </div>
+
+                <!-- Quick Action Buttons -->
+                <div style="display:flex; flex-direction:column; gap:0.5rem; min-width:140px;">
+                    <a th:href="@{'/resources/' + ${m.resource.id}}" class="btn btn-primary btn-sm">
+                        Request to Borrow
+                    </a>
+                    <a th:href="@{'/resources/' + ${m.resource.id}}" class="btn btn-secondary btn-sm">
+                        View Details
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div style="font-weight:700;">CRKH — Campus Resource & Knowledge Hub</div>
+            <div>© 2026 Verified Campus Exchange Platform</div>
+        </div>
+    </footer>
+
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: crkh-backend
+    env: docker
+    dockerfilePath: backend/Dockerfile
+    dockerContext: backend
+    plan: free
+    region: oregon
+    healthCheckPath: /
+    envVars:
+      - key: DB_URL
+        fromDatabase:
+          name: crkh-db
+          property: connectionString
+      - key: DB_USERNAME
+        fromDatabase:
+          name: crkh-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: crkh-db
+          property: password
+      - key: JWT_SECRET
+        generateValue: true
+
+databases:
+  - name: crkh-db
+    databaseName: crkh_db
+    user: crkh_user
+    plan: free
+    region: oregon

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In — CRKH</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body style="display:flex; flex-direction:column; min-height:100vh;">
+    <div th:replace="~{fragments/navbar :: header('login')}"></div>
+
+    <div class="container" style="flex:1; display:grid; place-items:center; padding:3.5rem 1rem;">
+        <div class="card" style="width:100%; max-width:480px; padding:2.75rem; box-shadow:var(--shadow-liquid-modal); position:relative;">
+            <div style="text-align:center; margin-bottom:2rem;">
+                <div class="brand-icon-box" style="margin:0 auto 1.25rem; width:48px; height:48px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path></svg>
+                </div>
+                <h1 style="font-size:1.85rem; font-weight:800; letter-spacing:-0.03em;">Welcome to CRKH</h1>
+                <p style="color:var(--text-muted); font-size:0.9rem;">Sign in with your verified campus email</p>
+            </div>
+
+            <div th:if="${param.error}" class="alert alert-danger">
+                <span>⚠️</span> Invalid college email or password.
+            </div>
+            <div th:if="${param.logout}" class="alert alert-info">
+                <span>✅</span> You have been securely signed out.
+            </div>
+
+            <form th:action="@{/perform_login}" method="post">
+                <div class="form-group">
+                    <label class="form-label" for="username">College Email</label>
+                    <input type="email" id="username" name="username" class="form-control" placeholder="name@college.edu" required autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:0.75rem;">
+                    Sign In to Hub ➔
+                </button>
+            </form>
+
+            <!-- 1-Click Demo Accounts Quick Test (Proactive Improvement) -->
+            <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid var(--liquid-glass-border-light);">
+                <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; font-weight:700; letter-spacing:0.05em; margin-bottom:0.75rem; text-align:center;">
+                    ⚡ 1-Click Demo Test Accounts
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
+                    <button type="button" class="btn btn-secondary btn-sm" data-fill-email="student1@college.edu" data-fill-pass="Student@123">
+                        🎓 Student 1 (Alex)
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-fill-email="student2@college.edu" data-fill-pass="Student@123">
+                        🔬 Student 2 (Priya)
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-fill-email="student3@college.edu" data-fill-pass="Student@123">
+                        🛠️ Student 3 (Marcus)
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-fill-email="admin@college.edu" data-fill-pass="Admin@123">
+                        🛡️ Campus Admin
+                    </button>
+                </div>
+            </div>
+
+            <div style="text-align:center; margin-top:1.5rem; font-size:0.88rem; color:var(--text-muted);">
+                Don't have an account? <a th:href="@{/register}" style="color:var(--primary); font-weight:700;">Register here</a>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

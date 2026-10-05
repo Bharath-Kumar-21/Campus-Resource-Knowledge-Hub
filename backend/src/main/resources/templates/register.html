@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Campus Account — CRKH</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body style="display:flex; flex-direction:column; min-height:100vh;">
+    <div th:replace="~{fragments/navbar :: header('register')}"></div>
+
+    <div class="container" style="flex:1; display:grid; place-items:center; padding:3.5rem 1rem;">
+        <div class="card" style="width:100%; max-width:480px; padding:2.75rem; box-shadow:var(--shadow-liquid-modal);">
+            <div style="text-align:center; margin-bottom:2rem;">
+                <div class="brand-icon-box" style="margin:0 auto 1.25rem; width:48px; height:48px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path></svg>
+                </div>
+                <h1 style="font-size:1.85rem; font-weight:800; letter-spacing:-0.03em;">Join Campus Hub</h1>
+                <p style="color:var(--text-muted); font-size:0.9rem;">Share equipment, match resources, access knowledge</p>
+            </div>
+
+            <form id="regForm">
+                <div class="form-group">
+                    <label class="form-label" for="regName">Full Name</label>
+                    <input type="text" id="regName" class="form-control" placeholder="e.g. Bharath Kumar" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="regEmail">College Email</label>
+                    <input type="email" id="regEmail" class="form-control" placeholder="username@college.edu" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="regPassword">Password (min 6 chars)</label>
+                    <input type="password" id="regPassword" class="form-control" placeholder="••••••••" minlength="6" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="regRole">Role</label>
+                    <select id="regRole" class="form-control">
+                        <option value="STUDENT">Student</option>
+                        <option value="MODERATOR">Campus Moderator</option>
+                    </select>
+                </div>
+
+                <div id="regAlert" style="display:none;" class="alert"></div>
+
+                <button type="submit" id="regBtn" class="btn btn-primary btn-block btn-lg" style="margin-top:0.75rem;">
+                    Complete Registration ➔
+                </button>
+            </form>
+
+            <div style="text-align:center; margin-top:1.5rem; font-size:0.88rem; color:var(--text-muted);">
+                Already have a campus account? <a th:href="@{/login}" style="color:var(--primary); font-weight:700;">Sign in</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('regForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('regBtn');
+            const alertBox = document.getElementById('regAlert');
+            btn.disabled = true;
+            btn.innerText = 'Creating account...';
+
+            const payload = {
+                name: document.getElementById('regName').value,
+                email: document.getElementById('regEmail').value,
+                password: document.getElementById('regPassword').value,
+                role: document.getElementById('regRole').value
+            };
+
+            try {
+                const res = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alertBox.className = 'alert alert-success';
+                    alertBox.style.display = 'flex';
+                    alertBox.innerText = 'Registration successful! Redirecting to login...';
+                    setTimeout(() => window.location.href = '/login', 1500);
+                } else {
+                    alertBox.className = 'alert alert-danger';
+                    alertBox.style.display = 'flex';
+                    alertBox.innerText = data.message || 'Registration failed.';
+                    btn.disabled = false;
+                    btn.innerText = 'Complete Registration ➔';
+                }
+            } catch (err) {
+                alertBox.className = 'alert alert-danger';
+                alertBox.style.display = 'flex';
+                alertBox.innerText = 'Network error during registration.';
+                btn.disabled = false;
+                btn.innerText = 'Complete Registration ➔';
+            }
+        });
+    </script>
+</body>
+</html>

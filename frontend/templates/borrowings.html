@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Exchanges & Borrowings — CRKH</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: header('borrowings')}"></div>
+
+    <main class="container" style="padding-top:2.5rem; padding-bottom:4rem;">
+        <div style="margin-bottom:2rem;">
+            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.35rem;">
+                <span class="badge" style="background:rgba(108,142,245,0.12); color:var(--accent-blue); font-weight:700;">Campus Exchange Ledger</span>
+                <span class="badge badge-available">Mutual Satisfaction Protection</span>
+            </div>
+            <h1 style="font-size:2.2rem; font-weight:800; color:var(--text-main); letter-spacing:-0.03em; margin:0;">My Exchanges & Borrowings</h1>
+            <p style="color:var(--text-muted); font-size:0.95rem; margin:0.35rem 0 0 0;">
+                Track physical campus resources in your possession and manage exchange proposals for items you listed.
+            </p>
+        </div>
+
+        <div th:if="${param.requested}" class="alert alert-success" style="margin-bottom:1.5rem;">
+            <span>✓</span> Exchange request and offer submitted to the owner! You will be notified upon agreement.
+        </div>
+        <div th:if="${param.approved}" class="alert alert-success" style="margin-bottom:1.5rem;">
+            <span>✓</span> Exchange proposal accepted! Mutual satisfaction agreement established. Proceed to QR handover.
+        </div>
+        <div th:if="${param.declined}" class="alert alert-info" style="margin-bottom:1.5rem;">
+            <span>ℹ️</span> Request was declined.
+        </div>
+        <div th:if="${param.returned}" class="alert alert-success" style="margin-bottom:1.5rem;">
+            <span>✓</span> Return and mutual satisfaction confirmed! +5 Reputation points awarded.
+        </div>
+
+        <!-- Section 1: Incoming Exchange Proposals (Provider / Lender View) -->
+        <div class="glass-card" style="padding:2rem; margin-bottom:2.5rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
+                <div>
+                    <h2 style="font-size:1.35rem; font-weight:800; color:var(--text-main); margin:0;">Incoming Exchange Requests for My Items (Provider)</h2>
+                    <p style="font-size:0.88rem; color:var(--text-muted); margin:0.25rem 0 0 0;">Review what acceptors are offering in exchange to ensure you are 100% satisfied before approving</p>
+                </div>
+            </div>
+
+            <div th:if="${#lists.isEmpty(incomingRequests)}" style="text-align:center; padding:3rem 1.5rem; color:var(--text-muted);">
+                <div style="font-size:2.4rem; margin-bottom:0.5rem; opacity:0.6;">📥</div>
+                <h4 style="font-size:1.1rem; font-weight:700; color:var(--text-main); margin-bottom:0.25rem;">No Pending Exchange Requests</h4>
+                <p style="font-size:0.88rem; margin:0;">When students request to borrow or swap for your listed items, their offers will appear here.</p>
+            </div>
+
+            <div th:unless="${#lists.isEmpty(incomingRequests)}" class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Item Requested</th>
+                            <th>Borrower / Acceptor</th>
+                            <th>Exchange Mode</th>
+                            <th>Acceptor's Offer (To Satisfy You)</th>
+                            <th>Dates</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="inReq : ${incomingRequests}">
+                            <td style="font-weight:700; color:var(--text-main);" th:text="${inReq.resourceTitle}">Resource Title</td>
+                            <td>
+                                <span style="font-weight:600; color:var(--text-main);" th:text="${inReq.borrowerName}">Student Name</span>
+                            </td>
+                            <td>
+                                <span th:if="${inReq.sharingType == 'ITEM_EXCHANGE'}" class="badge" style="background:rgba(155,138,251,0.18); color:var(--accent-lavender); font-weight:700;">🔄 Item Exchange</span>
+                                <span th:if="${inReq.sharingType == 'SKILL_SWAP'}" class="badge" style="background:rgba(224,109,83,0.18); color:#E06D53; font-weight:700;">💡 Skill Swap</span>
+                                <span th:if="${inReq.sharingType == 'SECURITY_PLEDGE'}" class="badge" style="background:rgba(108,142,245,0.18); color:var(--accent-blue); font-weight:700;">🛡️ Security Pledge</span>
+                                <span th:if="${inReq.sharingType == null or inReq.sharingType == 'FREE_BORROW'}" class="badge" style="background:rgba(121,201,176,0.18); color:var(--mint); font-weight:700;">🌿 Free Borrow</span>
+                            </td>
+                            <td>
+                                <div style="background:rgba(255,255,255,0.6); border:1px solid rgba(108,142,245,0.25); border-radius:10px; padding:0.45rem 0.75rem; font-size:0.85rem; max-width:260px;">
+                                    <strong style="color:var(--accent-blue);">Offer:</strong>
+                                    <span th:text="${inReq.offeredExchange != null and !inReq.offeredExchange.isEmpty() ? inReq.offeredExchange : (inReq.notes != null ? inReq.notes : 'Standard goodwill campus loan.')}">Offer</span>
+                                </div>
+                            </td>
+                            <td style="font-size:0.85rem; color:var(--text-muted);" th:text="${inReq.startDate} + ' to ' + ${inReq.endDate}">Dates</td>
+                            <td>
+                                <div style="display:flex; gap:0.4rem;">
+                                    <form th:action="@{'/borrowings/' + ${inReq.id} + '/approve'}" method="post">
+                                        <button type="submit" class="btn btn-primary btn-sm" style="font-weight:700;">
+                                            ✓ Agree & Handover
+                                        </button>
+                                    </form>
+                                    <form th:action="@{'/borrowings/' + ${inReq.id} + '/decline'}" method="post">
+                                        <button type="submit" class="btn btn-secondary btn-sm" style="color:#D9534F;">
+                                            ✕ Decline
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section 2: Items I Am Currently Borrowing / Exchanging (Acceptor View) -->
+        <div class="glass-card" style="padding:2rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
+                <div>
+                    <h2 style="font-size:1.35rem; font-weight:800; color:var(--text-main); margin:0;">Items I Am Borrowing / Exchanging (Acceptor)</h2>
+                    <p style="font-size:0.88rem; color:var(--text-muted); margin:0.25rem 0 0 0;">Verify physical handovers via QR code and return items promptly to keep campus trust high</p>
+                </div>
+            </div>
+
+            <div th:if="${#lists.isEmpty(myBorrowings)}" style="text-align:center; padding:3rem 1.5rem; color:var(--text-muted);">
+                <div style="font-size:2.4rem; margin-bottom:0.5rem; opacity:0.6;">🤝</div>
+                <h4 style="font-size:1.1rem; font-weight:700; color:var(--text-main); margin-bottom:0.25rem;">No Active Borrowings</h4>
+                <p style="font-size:0.88rem; margin:0 0 1rem 0;">Explore the catalog to propose an exchange or borrow equipment for your coursework.</p>
+                <a th:href="@{/resources}" class="btn btn-primary btn-sm">Explore Campus Catalog</a>
+            </div>
+
+            <div th:unless="${#lists.isEmpty(myBorrowings)}" class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Resource</th>
+                            <th>Lender</th>
+                            <th>Mode & Your Offer</th>
+                            <th>Period</th>
+                            <th>Status</th>
+                            <th>QR Handover / Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="myB : ${myBorrowings}">
+                            <td style="font-weight:700; color:var(--text-main);" th:text="${myB.resourceTitle}">Title</td>
+                            <td th:text="${myB.ownerName}">Owner</td>
+                            <td>
+                                <div style="font-size:0.85rem;">
+                                    <span th:if="${myB.sharingType == 'ITEM_EXCHANGE'}" class="badge" style="background:rgba(155,138,251,0.18); color:var(--accent-lavender); font-weight:700;">🔄 Item Exchange</span>
+                                    <span th:if="${myB.sharingType == 'SKILL_SWAP'}" class="badge" style="background:rgba(224,109,83,0.18); color:#E06D53; font-weight:700;">💡 Skill Swap</span>
+                                    <span th:if="${myB.sharingType == 'SECURITY_PLEDGE'}" class="badge" style="background:rgba(108,142,245,0.18); color:var(--accent-blue); font-weight:700;">🛡️ Security Pledge</span>
+                                    <span th:if="${myB.sharingType == null or myB.sharingType == 'FREE_BORROW'}" class="badge" style="background:rgba(121,201,176,0.18); color:var(--mint); font-weight:700;">🌿 Free Borrow</span>
+                                    <div th:if="${myB.offeredExchange != null and !myB.offeredExchange.isEmpty()}" style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem;" th:text="'Offer: ' + ${myB.offeredExchange}"></div>
+                                </div>
+                            </td>
+                            <td style="font-size:0.85rem; color:var(--text-muted);" th:text="${myB.startDate} + ' to ' + ${myB.endDate}">Dates</td>
+                            <td>
+                                <span class="badge" th:classappend="'badge-' + ${#strings.toLowerCase(myB.status)}" th:text="${myB.status}">STATUS</span>
+                            </td>
+                            <td>
+                                <a th:if="${myB.status.name() == 'APPROVED' or myB.status.name() == 'ACTIVE'}"
+                                   th:href="@{'/handover/' + ${myB.id}}" class="btn btn-primary btn-sm" style="font-weight:700;">
+                                    <span>📱</span> QR Handover & Verify
+                                </a>
+                                <span th:if="${myB.status.name() == 'PENDING'}" style="font-size:0.82rem; color:var(--text-muted);">
+                                    Waiting for lender acceptance...
+                                </span>
+                                <span th:if="${myB.status.name() == 'RETURNED'}" style="font-size:0.82rem; color:var(--mint); font-weight:700;">
+                                    ✓ Exchange Completed
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 Campus Resource & Knowledge Hub (CRKH) • Liquid Glass Interface</p>
+    </footer>
+
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

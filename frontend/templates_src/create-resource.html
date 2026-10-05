@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share / Exchange a Resource — CRKH</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: header('resources')}"></div>
+
+    <main class="container" style="max-width:780px; padding-top:2.5rem; padding-bottom:4rem;">
+        <div style="margin-bottom:1.5rem;">
+            <a th:href="@{/resources}" class="btn btn-secondary btn-sm" style="display:inline-flex; align-items:center; gap:0.4rem;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                Back to Campus Catalog
+            </a>
+        </div>
+
+        <div class="glass-card" style="padding:2.5rem; position:relative; overflow:hidden;">
+            <!-- Caustic light refraction blob -->
+            <div style="position:absolute; top:-40px; right:-40px; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle, rgba(108,142,245,0.18) 0%, transparent 70%); filter:blur(40px); pointer-events:none;"></div>
+
+            <div style="display:flex; align-items:center; gap:1rem; margin-bottom:2rem;">
+                <div style="width:48px; height:48px; border-radius:14px; background:linear-gradient(135deg, rgba(108,142,245,0.2), rgba(155,138,251,0.2)); border:1px solid rgba(108,142,245,0.3); display:grid; place-items:center; color:var(--accent-blue); font-size:1.5rem;">
+                    ✦
+                </div>
+                <div>
+                    <h1 style="font-size:1.85rem; font-weight:800; color:var(--text-main); letter-spacing:-0.03em; margin:0;">Share or Exchange Resource</h1>
+                    <p style="font-size:0.9rem; color:var(--text-muted); margin:0.25rem 0 0 0;">List textbooks, calculators, cables, lab gear with your preferred exchange or borrowing terms</p>
+                </div>
+            </div>
+
+            <!-- Form with enctype multipart/form-data for image uploads -->
+            <form th:action="@{/resources/new}" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label class="form-label" for="title">Resource Title *</label>
+                    <input type="text" id="title" name="title" class="form-control" placeholder="e.g. Casio fx-991EX ClassWiz or DBMS 7th Edition" required>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
+                    <div class="form-group">
+                        <label class="form-label" for="category">Category *</label>
+                        <select id="category" name="category" class="form-control" required>
+                            <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}">CATEGORY</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="itemCondition">Physical Condition *</label>
+                        <select id="itemCondition" name="itemCondition" class="form-control">
+                            <option value="Like New">Like New (Mint condition)</option>
+                            <option value="Excellent">Excellent (Minor cosmetic marks)</option>
+                            <option value="Good" selected>Good (Fully functional)</option>
+                            <option value="Fair">Fair (Well used / readable)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Product Photo Upload Section -->
+                <div class="form-group" style="background:rgba(255,255,255,0.5); border:2px dashed rgba(108,142,245,0.35); border-radius:18px; padding:1.5rem; text-align:center; transition:border-color 0.2s ease;">
+                    <label class="form-label" style="margin-bottom:0.4rem; display:block; font-weight:700;">
+                        📸 Upload Product Photo
+                    </label>
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin:0 0 1rem 0;">Upload a clear photo of your item (PNG, JPG, WebP) or provide an image link below</p>
+                    
+                    <input type="file" id="imageFile" name="imageFile" accept="image/*" class="form-control" style="max-width:320px; margin:0 auto 0.75rem auto;" onchange="previewUploadImage(event)">
+                    
+                    <div id="imagePreviewContainer" style="display:none; margin-top:1rem;">
+                        <img id="imagePreview" src="#" alt="Preview" style="max-height:160px; border-radius:12px; border:1px solid rgba(0,0,0,0.1); box-shadow:0 8px 20px rgba(0,0,0,0.06);">
+                        <p style="font-size:0.75rem; color:var(--mint); font-weight:700; margin:0.35rem 0 0 0;">✓ Ready to upload</p>
+                    </div>
+
+                    <div style="font-size:0.8rem; color:var(--text-dim); margin-top:0.75rem;">
+                        Or optional image URL:
+                        <input type="url" id="imageUrl" name="imageUrl" class="form-control" style="margin-top:0.35rem; font-size:0.85rem;" placeholder="https://... or leave blank for automatic studio illustration">
+                    </div>
+                </div>
+
+                <!-- Exchange & Mutual Satisfaction Model Section -->
+                <div style="background:linear-gradient(135deg, rgba(108,142,245,0.06), rgba(155,138,251,0.06)); border:1px solid rgba(108,142,245,0.25); border-radius:18px; padding:1.5rem; margin-bottom:1.5rem;">
+                    <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:0.75rem;">
+                        <span style="font-size:1.2rem;">🤝</span>
+                        <h3 style="font-size:1.05rem; font-weight:800; color:var(--text-main); margin:0;">Exchange & Sharing Terms (Mutual Satisfaction)</h3>
+                    </div>
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin:0 0 1.25rem 0;">Decide how you want to share this item so both you (the provider) and the borrower are satisfied.</p>
+
+                    <div class="form-group">
+                        <label class="form-label" for="sharingType">Sharing / Exchange Mode *</label>
+                        <select id="sharingType" name="sharingType" class="form-control" onchange="updateExchangeHints(this.value)">
+                            <option value="FREE_BORROW">🌿 Free Campus Borrow (Community goodwill, +5 Reputation on return)</option>
+                            <option value="ITEM_EXCHANGE" selected>🔄 Direct Item Exchange (Swap for a book, calculator, or cable you need)</option>
+                            <option value="SKILL_SWAP">💡 Skill / Knowledge Swap (Exchange for code review, tutoring, or lab help)</option>
+                            <option value="SECURITY_PLEDGE">🛡️ Refundable Security Pledge (Refundable deposit or student ID collateral)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="exchangePreference" id="exchangePrefLabel">What do you want in exchange? *</label>
+                        <input type="text" id="exchangePreference" name="exchangePreference" class="form-control" placeholder="e.g. Looking to swap for OS Textbook, USB-C hub, or Calculus Notes">
+                        <span id="exchangeHint" style="font-size:0.75rem; color:var(--text-dim); margin-top:0.35rem; display:block;">Specify the exact physical gear, notes, or course help you'd like the acceptor to bring.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="satisfactionTerms">Mutual Satisfaction & Verification Terms</label>
+                        <input type="text" id="satisfactionTerms" name="satisfactionTerms" class="form-control" value="Physical inspection on handover; both confirm working condition before QR scan" placeholder="e.g. Test all ports together at library pickup; return undamaged">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="location">Pickup Location on Campus *</label>
+                    <input type="text" id="location" name="location" class="form-control" placeholder="e.g. Central Library 2F, Engineering Quad, or Science Block" required>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
+                    <div class="form-group">
+                        <label class="form-label" for="availabilityFrom">Available From *</label>
+                        <input type="date" id="availabilityFrom" name="availabilityFrom" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="availabilityTo">Available Until *</label>
+                        <input type="date" id="availabilityTo" name="availabilityTo" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="description">Detailed Description & Included Accessories</label>
+                    <textarea id="description" name="description" class="form-control" rows="3" placeholder="Specify edition, included power cables, manual, or any known cosmetic quirks..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:1.5rem; font-weight:700;">
+                    ✦ Publish Campus Resource Listing
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 Campus Resource & Knowledge Hub (CRKH) • Liquid Glass Interface</p>
+    </footer>
+
+    <script th:src="@{/js/main.js}"></script>
+    <script>
+        function previewUploadImage(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    const img = document.getElementById('imagePreview');
+                    img.src = evt.target.result;
+                    document.getElementById('imagePreviewContainer').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function updateExchangeHints(val) {
+            const label = document.getElementById('exchangePrefLabel');
+            const hint = document.getElementById('exchangeHint');
+            const input = document.getElementById('exchangePreference');
+            if (val === 'FREE_BORROW') {
+                label.innerText = 'Lender Note / Expectations (Optional)';
+                hint.innerText = 'Free community loan. E.g. "Free for exams! Just please return with battery/case intact."';
+                input.placeholder = 'e.g. Free to borrow for midterms! Return clean and undamaged.';
+            } else if (val === 'ITEM_EXCHANGE') {
+                label.innerText = 'Item Desired in Exchange *';
+                hint.innerText = 'Specify which textbook, calculator, adapter, or notes you want to swap for.';
+                input.placeholder = 'e.g. Looking to exchange for TI-84 calculator or Operating Systems textbook';
+            } else if (val === 'SKILL_SWAP') {
+                label.innerText = 'Knowledge / Peer Help Desired in Exchange *';
+                hint.innerText = 'Specify what tutoring or review help satisfies your exchange.';
+                input.placeholder = 'e.g. 45-min Python lab debugging or Calculus 2 exam review';
+            } else if (val === 'SECURITY_PLEDGE') {
+                label.innerText = 'Refundable Security Deposit / Collateral Terms *';
+                hint.innerText = 'Protects high-value gear. Refunded immediately upon return QR check.';
+                input.placeholder = 'e.g. Refundable $15 campus safety pledge or Student ID collateral';
+            }
+        }
+
+        // Set default dates
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toISOString().split('T')[0];
+            const nextMonth = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+            document.getElementById('availabilityFrom').value = today;
+            document.getElementById('availabilityTo').value = nextMonth;
+        });
+    </script>
+</body>
+</html>
