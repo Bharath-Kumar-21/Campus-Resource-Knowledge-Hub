@@ -1,21 +1,3 @@
 {
-  "version": 2,
-  "routes": [
-    {
-      "src": "/resources",
-      "dest": "/resources.html"
-    },
-    {
-      "src": "/login",
-      "dest": "/login.html"
-    },
-    {
-      "src": "/register",
-      "dest": "/register.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/"
-    }
-  ]
+  "cleanUrls": true
 }
