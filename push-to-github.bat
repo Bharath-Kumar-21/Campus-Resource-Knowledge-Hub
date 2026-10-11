@@ -2,7 +2,7 @@
 title Push CRKH to GitHub
 echo ======================================================================
 echo          PUSHING CRKH TO GITHUB
-echo          Repository: https://github.com/Bharath-Kumar-21/Campus-Resource-CRKH-
+echo          Repository: https://github.com/Bharath-Kumar-21/Campus-Resource-Knowledge-Hub
 echo ======================================================================
 echo.
 cd /d "D:\CRKH"
@@ -14,7 +14,7 @@ git push -u origin main
 echo.
 if %ERRORLEVEL% EQU 0 (
     echo ======================================================================
-    echo   SUCCESS! Pushed to https://github.com/Bharath-Kumar-21/Campus-Resource-CRKH-
+    echo   SUCCESS! Pushed to https://github.com/Bharath-Kumar-21/Campus-Resource-Knowledge-Hub
     echo ======================================================================
 ) else (
     echo ======================================================================
