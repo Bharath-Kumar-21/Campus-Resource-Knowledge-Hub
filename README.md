@@ -60,24 +60,24 @@ $$\text{Score} = 0.30 \times \text{Relevance} + 0.20 \times \text{Location} + 0.
 ## 🏗️ System Architecture
 
 ```mermaid
-graph TD
-    User([Student / Faculty / Admin]) -->|HTTPS / Browser| UI[Thymeleaf + Apple Liquid Glass UI]
+flowchart TD
+    User(["Student / Faculty / Admin"]) -->|"HTTPS / Browser"| UI["Thymeleaf + Apple Liquid Glass UI"]
     
-    subgraph Spring Boot Backend (Port 8080)
-        UI --> Controller[Spring MVC Controllers & REST APIs]
-        Controller --> Security[Spring Security & Session Auth]
-        Security --> Services[Core Business Logic Services]
+    subgraph Backend ["Spring Boot Backend (Port 8080)"]
+        UI --> Controller["Spring MVC Controllers & REST APIs"]
+        Controller --> Security["Spring Security & Session Auth"]
+        Security --> Services["Core Business Logic Services"]
         
-        Services --> MatchEngine[6-Factor Weighted Matching Engine]
-        Services --> QRService[Cryptographic ZXing QR Token Engine]
-        Services --> VaultService[Private Knowledge Vault Manager]
-        Services --> ResourceService[Resource & Exchange Lifecycle]
+        Services --> MatchEngine["6-Factor Weighted Matching Engine"]
+        Services --> QRService["Cryptographic ZXing QR Token Engine"]
+        Services --> VaultService["Private Knowledge Vault Manager"]
+        Services --> ResourceService["Resource & Exchange Lifecycle"]
     end
     
-    subgraph Data & Storage Layer
-        Services --> JPA[Spring Data JPA / Hibernate]
-        JPA --> MySQL[(MySQL 8.0 Database)]
-        VaultService --> LocalDisk[Persistent Upload Volume /uploads]
+    subgraph Storage ["Data & Storage Layer"]
+        Services --> JPA["Spring Data JPA / Hibernate"]
+        JPA --> MySQL[("MySQL 8.0 Database")]
+        VaultService --> LocalDisk["Persistent Upload Volume /uploads"]
     end
 ```
 
