@@ -1,4 +1,4 @@
-﻿// Campus Resource & Knowledge Hub (CRKH) - Client Controller & Interactions
+// Campus Resource & Knowledge Hub (CRKH) - Client Controller & Interactions
 
 // Fallback images map for categories
 const CATEGORY_FALLBACK_IMAGES = {
@@ -16,24 +16,36 @@ const CATEGORY_FALLBACK_IMAGES = {
   'OTHER': '/images/products/arduino_kit.jpg'
 };
 
+// Global CRKH Namespace
+window.CRKH = {
+  handleImageFallback: function(img) {
+    if (!img) return;
+    const cat = img.getAttribute('data-category') || 'OTHER';
+    const fallback = CATEGORY_FALLBACK_IMAGES[cat] || '/images/products/default.svg';
+    if (!img.dataset.fallbackTried) {
+      img.dataset.fallbackTried = 'true';
+      img.src = fallback;
+    }
+  },
+  showToast: function(message, type = 'info') {
+    showToast(message, type);
+  }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   initImageFallbacks();
   initDemoLoginFillers();
-  initQuickViewModals();
   initSearchShortcuts();
   initCategoryRibbon();
   initCopyButtons();
+  initUrlCategoryFilter();
 });
 
 // 1. Guaranteed Image Fallback System (Zero Broken Images)
 function initImageFallbacks() {
   document.querySelectorAll('img[data-category]').forEach(img => {
     img.addEventListener('error', function() {
-      const cat = this.getAttribute('data-category') || 'OTHER';
-      const fallback = CATEGORY_FALLBACK_IMAGES[cat] || '/images/products/default.svg';
-      if (this.src !== fallback) {
-        this.src = fallback;
-      }
+      CRKH.handleImageFallback(this);
     });
   });
 }
@@ -74,64 +86,114 @@ function initCategoryRibbon() {
   const pills = document.querySelectorAll('.cat-pill[data-filter]');
   if (pills.length > 0) {
     pills.forEach(pill => {
-      pill.addEventListener('click', () => {
-        const filter = pill.getAttribute('data-filter');
-        pills.forEach(p => p.classList.remove('active'));
-        pill.classList.add('active');
+      pill.addEventListener('click', (e) => {
+        const cards = document.querySelectorAll('.product-card[data-category]');
+        if (cards.length > 0) {
+          e.preventDefault();
+          const filter = pill.getAttribute('data-filter');
+          pills.forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
 
-        const items = document.querySelectorAll('.product-card[data-category]');
-        let count = 0;
-        items.forEach(card => {
-          const cardCat = card.getAttribute('data-category');
-          if (filter === 'ALL' || cardCat === filter) {
-            card.style.display = '';
-            count++;
-          } else {
-            card.style.display = 'none';
-          }
-        });
+          let count = 0;
+          cards.forEach(card => {
+            const cardCat = card.getAttribute('data-category');
+            if (filter === 'ALL' || cardCat === filter) {
+              card.style.display = '';
+              count++;
+            } else {
+              card.style.display = 'none';
+            }
+          });
 
-        const countEl = document.getElementById('visibleResourceCount');
-        if (countEl) countEl.innerText = count;
+          const countEl = document.getElementById('visibleResourceCount');
+          if (countEl) countEl.innerText = count;
+        }
       });
     });
   }
 }
 
-// 5. Quick View & Request Modal
-function initQuickViewModals() {
-  document.querySelectorAll('[data-quick-view]').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const card = btn.closest('.product-card');
-      if (!card) return;
-
-      const title = card.getAttribute('data-title') || 'Campus Resource';
-      const category = card.getAttribute('data-category') || 'OTHER';
-      const location = card.getAttribute('data-location') || 'Campus Central';
-      const owner = card.getAttribute('data-owner') || 'Student';
-      const rep = card.getAttribute('data-rep') || '100';
-      const dates = card.getAttribute('data-dates') || 'Available Today';
-      const desc = card.getAttribute('data-desc') || 'Shared campus resource in good condition.';
-      const resId = card.getAttribute('data-id');
-      const imgSrc = card.querySelector('.product-card-img')?.src || CATEGORY_FALLBACK_IMAGES[category];
-
-      document.getElementById('qvTitle').innerText = title;
-      document.getElementById('qvCategory').innerText = category;
-      document.getElementById('qvLocation').innerText = location;
-      document.getElementById('qvOwner').innerText = `${owner} (${rep} pts)`;
-      document.getElementById('qvDates').innerText = dates;
-      document.getElementById('qvDesc').innerText = desc;
-      document.getElementById('qvImg').src = imgSrc;
-      document.getElementById('qvResourceId').value = resId;
-      document.getElementById('qvDetailLink').href = `/resources/${resId}`;
-
-      openModal('quickViewModal');
-    });
-  });
+// Check category parameter in URL on page load
+function initUrlCategoryFilter() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const cat = params.get('category');
+    if (cat) {
+      const pill = document.querySelector(`.cat-pill[data-filter="${cat}"]`);
+      if (pill) {
+        pill.click();
+      }
+    }
+  } catch (e) {}
 }
 
-// 6. Token Copy Helper
+// 5. Exchange Mode Filter
+window.filterByExchange = function(type, btn) {
+  const tabs = document.querySelectorAll('#exchangeModeTabs button, .product-filter-bar button');
+  if (tabs.length > 0 && btn) {
+    tabs.forEach(b => b.classList.remove('active-tab'));
+    btn.classList.add('active-tab');
+  }
+
+  const cards = document.querySelectorAll('.product-card');
+  let count = 0;
+  cards.forEach(card => {
+    const cardType = card.getAttribute('data-sharing-type') || 'FREE_BORROW';
+    if (type === 'ALL' || cardType === type) {
+      card.style.display = '';
+      count++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  const countEl = document.getElementById('visibleResourceCount');
+  if (countEl) countEl.innerText = count;
+};
+
+// 6. Quick View Modal Handlers
+window.openQuickView = function(btn) {
+  const modal = document.getElementById('quickViewModal');
+  if (!modal) return;
+
+  const id = btn.getAttribute('data-id');
+  const title = btn.getAttribute('data-title');
+  const loc = btn.getAttribute('data-location');
+  const owner = btn.getAttribute('data-owner');
+  const cond = btn.getAttribute('data-condition');
+  const sharingType = btn.getAttribute('data-sharing-type') || 'FREE_BORROW';
+  const pref = btn.getAttribute('data-exchange-pref');
+  const sat = btn.getAttribute('data-satisfaction');
+
+  const titleEl = document.getElementById('qvTitle');
+  if (titleEl) titleEl.innerText = title || 'Resource Details';
+  const locEl = document.getElementById('qvLocation');
+  if (locEl) locEl.innerText = loc || 'Campus';
+  const ownerEl = document.getElementById('qvOwner');
+  if (ownerEl) ownerEl.innerText = owner || 'Verified Student';
+  const condEl = document.getElementById('qvCondition');
+  if (condEl) condEl.innerText = cond || 'Good';
+  const prefEl = document.getElementById('qvExchangePref');
+  if (prefEl) prefEl.innerText = pref || 'Free campus community loan';
+  const satEl = document.getElementById('qvSatisfaction');
+  if (satEl) satEl.innerText = sat || 'Standard student code of conduct inspection on pickup.';
+
+  const linkEl = document.getElementById('qvDetailsLink');
+  if (linkEl) linkEl.href = '/resources/' + id;
+
+  modal.style.display = 'grid';
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeQuickView = function() {
+  const modal = document.getElementById('quickViewModal');
+  if (modal) {
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+};
+
+// 7. Token Copy Helper
 function initCopyButtons() {
   const copyBtn = document.getElementById('copyTokenBtn');
   if (copyBtn) {
@@ -148,7 +210,7 @@ function initCopyButtons() {
   }
 }
 
-// 7. Toast Notification Engine
+// 8. Toast Notification Engine
 function showToast(message, type = 'info') {
   let container = document.getElementById('toast-container');
   if (!container) {
@@ -176,24 +238,24 @@ function showToast(message, type = 'info') {
 }
 
 // Modal Global Utilities
-function openModal(id) {
+window.openModal = function(id) {
   const modal = document.getElementById(id);
   if (modal) {
     modal.style.display = 'grid';
     document.body.style.overflow = 'hidden';
   }
-}
+};
 
-function closeModal(id) {
+window.closeModal = function(id) {
   const modal = document.getElementById(id);
   if (modal) {
     modal.style.display = 'none';
     document.body.style.overflow = '';
   }
-}
+};
 
 // Quick Simulator for QR Handover
-function simulateQrScan() {
+window.simulateQrScan = function() {
   const tokenVal = document.getElementById('qrTokenVal')?.innerText?.trim();
   const tokenInput = document.querySelector('input[name="qrToken"]');
   if (tokenInput && tokenVal) {
@@ -203,4 +265,4 @@ function simulateQrScan() {
       tokenInput.closest('form')?.submit();
     }, 600);
   }
-}
+};

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Requests & Tracking — CRKH</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header class="header-wrapper">
+    <!-- Main Top Navigation -->
+    <div class="main-navbar">
+        <!-- Logo -->
+        <a href="/" class="brand">
+            <div class="brand-icon-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                    <path d="M6 6h10"></path>
+                    <path d="M6 10h10"></path>
+                </svg>
+            </div>
+            <div class="brand-text-block">
+                <div class="brand-title">CRKH <span>Hub</span></div>
+                <div class="brand-sub">Campus Resource Exchange</div>
+            </div>
+        </a>
+
+        <!-- Center E-Commerce Search Bar (Liquid Glass) -->
+        <form action="/resources" method="get" class="nav-search-bar">
+            <div class="nav-search-inner">
+                <svg class="nav-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" name="q" class="nav-search-input" placeholder="Search books, calculators, laptops, notes, lab equipment..." value="">
+                <span class="nav-search-badge">Press /</span>
+            </div>
+        </form>
+
+        <!-- Right Navigation Items -->
+        <div class="nav-actions">
+            <!-- Authenticated Links -->
+            <div style="display:flex; align-items:center; gap:0.6rem;">
+                <a href="/resources" class="nav-action-link">
+                    <svg class="nav-action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                    <span>Explore</span>
+                </a>
+                <a href="/requests" class="nav-action-link active">
+                    <svg class="nav-action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    <span>Requests</span>
+                </a>
+                <a href="/borrowings" class="nav-action-link">
+                    <svg class="nav-action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                    <span>My Borrowings</span>
+                </a>
+                <a href="/knowledge-vault" class="nav-action-link">
+                    <svg class="nav-action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <span>Vault</span>
+                </a>
+                <a href="/notifications" class="nav-action-link" title="Notifications">
+                    <svg class="nav-action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                    
+                </a>
+
+                <!-- Profile Dropdown & Reputation Tag -->
+                <a href="/profile" class="user-menu-pill">
+                    <div class="user-avatar-circle">B</div>
+                    <span class="user-menu-name">Bharath Kumar</span>
+                    <span class="user-rep-tag">95 pts</span>
+                </a>
+
+                <form action="/logout" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-secondary btn-sm" title="Log Out">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Public Anonymous Links -->
+            
+        </div>
+    </div>
+
+    <!-- Secondary Category Ribbon (E-Commerce style discovery) -->
+    <div class="category-ribbon">
+        <div class="category-ribbon-inner">
+            <a href="/resources" class="cat-pill active" data-filter="ALL">
+                <span>⚡ All Resources</span>
+            </a>
+            <a href="/resources?category=TEXTBOOK" class="cat-pill" data-filter="TEXTBOOK">
+                <span>📚 Textbooks & Books</span>
+            </a>
+            <a href="/resources?category=CALCULATOR" class="cat-pill" data-filter="CALCULATOR">
+                <span>🔢 Scientific Calculators</span>
+            </a>
+            <a href="/resources?category=ELECTRONICS" class="cat-pill" data-filter="ELECTRONICS">
+                <span>🎧 Headphones & Tech</span>
+            </a>
+            <a href="/resources?category=LAB_EQUIPMENT" class="cat-pill" data-filter="LAB_EQUIPMENT">
+                <span>🔬 Lab & Arduino Gear</span>
+            </a>
+            <a href="/resources?category=ADAPTER" class="cat-pill" data-filter="ADAPTER">
+                <span>🔌 USB-C Hubs & Adapters</span>
+            </a>
+            <a href="/resources?category=HDMI_CABLE" class="cat-pill" data-filter="HDMI_CABLE">
+                <span>🖥️ HDMI & Display Cables</span>
+            </a>
+            <a href="/resources?category=NOTES" class="cat-pill" data-filter="NOTES">
+                <span>📝 Course Notes</span>
+            </a>
+            <a href="/resources?category=SPORTS" class="cat-pill" data-filter="SPORTS">
+                <span>🏸 Sports Equipment</span>
+            </a>
+            <a href="/resources?category=STATIONERY" class="cat-pill" data-filter="STATIONERY">
+                <span>✏️ Drafting & Stationery</span>
+            </a>
+            <a href="/resources?category=HOSTEL_ITEMS" class="cat-pill" data-filter="HOSTEL_ITEMS">
+                <span>🎒 Hostel Essentials</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom App Dock -->
+    <nav class="mobile-bottom-dock">
+        <a href="/" class="dock-item">
+            <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+            <span>Home</span>
+        </a>
+        <a href="/resources" class="dock-item">
+            <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span>Explore</span>
+        </a>
+        <a href="/requests" class="dock-item active">
+            <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
+            <span>Requests</span>
+        </a>
+        <a href="/borrowings" class="dock-item">
+            <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"></rect></svg>
+            <span>Borrowings</span>
+        </a>
+        <a href="/knowledge-vault" class="dock-item">
+            <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            <span>Vault</span>
+        </a>
+        <a href="/profile" class="dock-item">
+            <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <span>Profile</span>
+        </a>
+    </nav>
+</header>
+
+    <main class="container" style="padding-top:2.5rem;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:2rem; flex-wrap:wrap; gap:1rem;">
+            <div>
+                <div style="font-size:0.8rem; font-weight:700; color:var(--primary); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:0.25rem;">
+                    Order-Style Tracking System
+                </div>
+                <h1 style="font-size:2.1rem; font-weight:800; letter-spacing:-0.03em;">Resource Requests & Tracking</h1>
+                <p style="color:var(--text-muted); font-size:0.92rem;">
+                    Post what you need and let our Intelligent Matching Engine rank suitable campus matches with visual progress tracking.
+                </p>
+            </div>
+            <button onclick="openModal('createRequestModal')" class="btn btn-primary">
+                + Post Resource Request
+            </button>
+        </div>
+
+        <!-- MY ACTIVE REQUESTS WITH E-COMMERCE STYLE TIMELINE STEPPER -->
+        <div style="margin-bottom:3rem;">
+            <h2 style="font-size:1.35rem; font-weight:800; margin-bottom:1rem;">My Requests & Live Tracking</h2>
+
+            
+
+            <div>
+                <div class="timeline-card">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem;">
+                        <div>
+                            <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:0.35rem;">
+                                <span style="font-family:'JetBrains Mono', monospace; font-size:0.85rem; font-weight:700; color:var(--primary);">REQUEST #CRKH-101</span>
+                                <span class="product-category-text">TEXTBOOK</span>
+                            </div>
+                            <h3 style="font-size:1.25rem; font-weight:800;">Need Database Systems Textbook for Midterm Review</h3>
+                            <div style="font-size:0.82rem; color:var(--text-muted); display:flex; gap:1rem; margin-top:0.35rem; flex-wrap:wrap;">
+                                <span>📅 Needed: <strong>2026-10-06 to 2026-10-15</strong></span>
+                                <span>📍 Location: <strong>Central Campus Library</strong></span>
+                                <span>🏷️ Keywords: <strong>DBMS database SQL normalization</strong></span>
+                            </div>
+                        </div>
+
+                        <!-- Match Engine Button -->
+                        <div>
+                            <a href="/matches/1" class="btn btn-primary btn-sm">
+                                <span>⚡ View Intelligent Matches</span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Progress Stepper (Order tracking style) -->
+                    <div class="stepper-progress">
+                        <div class="stepper-line">
+                            <div class="stepper-line-fill" style="width: 50%;"></div>
+                        </div>
+
+                        <div class="stepper-step completed">
+                            <div class="stepper-dot">✓</div>
+                            <span class="stepper-label">Requested</span>
+                        </div>
+
+                        <div class="stepper-step completed">
+                            <div class="stepper-dot">✓</div>
+                            <span class="stepper-label">Matched</span>
+                        </div>
+
+                        <div class="stepper-step active">
+                            <div class="stepper-dot">3</div>
+                            <span class="stepper-label">Approved</span>
+                        </div>
+
+                        <div class="stepper-step">
+                            <div class="stepper-dot">4</div>
+                            <span class="stepper-label">QR Pickup</span>
+                        </div>
+
+                        <div class="stepper-step">
+                            <div class="stepper-dot">5</div>
+                            <span class="stepper-label">Returned</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMMUNITY CAMPUS FEED OF REQUESTS -->
+        <div>
+            <h2 style="font-size:1.35rem; font-weight:800; margin-bottom:1rem;">Campus Requests Feed (Can You Help?)</h2>
+            <div class="stats-row" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+                <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
+                    <div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem;">
+                            <span class="product-category-text">TEXTBOOK</span>
+                            <span class="user-rep-tag">95 Rep</span>
+                        </div>
+                        <h3 style="font-size:1.15rem; font-weight:700; margin-bottom:0.4rem;">Need Database Systems Textbook for Midterm Review</h3>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.85rem;">Preparing for DBMS midterm exam next week. Looking for Navathe or Korth textbook.</p>
+                    </div>
+
+                    <div style="border-top:1px solid var(--liquid-glass-border-light); padding-top:0.75rem;">
+                        <div style="font-size:0.78rem; color:var(--text-muted); display:flex; justify-content:space-between; margin-bottom:0.75rem;">
+                            <span>Requested by <strong>Bharath Kumar</strong></span>
+                            <span>📍 <span>Central Campus Library</span></span>
+                        </div>
+                        <a href="/matches/1" class="btn btn-soft-blue btn-sm btn-block">
+                            View Matched Inventory ➔
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- CREATE REQUEST MODAL -->
+    <div id="createRequestModal" class="modal-overlay" onclick="if(event.target === this) closeModal('createRequestModal');">
+        <div class="modal-card">
+            <button class="modal-close-btn" onclick="closeModal('createRequestModal')">✕</button>
+            <h2 style="font-size:1.5rem; font-weight:800; margin-bottom:0.5rem;">Post Resource Request</h2>
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.5rem;">
+                Specify the equipment or notes you need. Our algorithm will rank best matches.
+            </p>
+
+            <form action="/requests/new" method="post">
+                <div class="form-group">
+                    <label class="form-label">What do you need? *</label>
+                    <input type="text" name="title" class="form-control" placeholder="e.g. Need Casio fx-991EX for Midterm Exam" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Category *</label>
+                    <select name="category" class="form-control" required>
+                        <option value="TEXTBOOK">TEXTBOOK</option>
+                        <option value="CALCULATOR">CALCULATOR</option>
+                        <option value="ELECTRONICS">ELECTRONICS</option>
+                        <option value="HDMI_CABLE">HDMI_CABLE</option>
+                        <option value="ADAPTER">ADAPTER</option>
+                        <option value="LAB_EQUIPMENT">LAB_EQUIPMENT</option>
+                        <option value="NOTES">NOTES</option>
+                        <option value="STUDY_MATERIALS">STUDY_MATERIALS</option>
+                        <option value="SPORTS">SPORTS</option>
+                        <option value="STATIONERY">STATIONERY</option>
+                        <option value="HOSTEL_ITEMS">HOSTEL_ITEMS</option>
+                        <option value="OTHER">OTHER</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Search Keywords / Course Code</label>
+                    <input type="text" name="keywords" class="form-control" placeholder="e.g. Casio, matrix math, integrals, CS201">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Pickup Campus Location Preference</label>
+                    <input type="text" name="location" class="form-control" placeholder="e.g. Central Library or Tech Park Block C" required>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
+                    <div>
+                        <label class="form-label">Needed From *</label>
+                        <input type="date" name="neededFrom" class="form-control" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Needed Until *</label>
+                        <input type="date" name="neededTo" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Notes / Details</label>
+                    <textarea name="description" class="form-control" placeholder="Briefly describe what you'll use it for..." rows="3"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg">
+                    Find Campus Matches Now ➔
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div style="font-weight:700;">CRKH — Campus Resource & Knowledge Hub</div>
+            <div>© 2026 Verified Campus Exchange Platform</div>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

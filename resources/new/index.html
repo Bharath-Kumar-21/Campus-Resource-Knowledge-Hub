@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share / Exchange a Resource — CRKH</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header class="header-wrapper">
+    <!-- Main Top Navigation -->
+    <div class="main-navbar">
+        <!-- Logo -->
+        <a href="/" class="brand">
+            <div class="brand-icon-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                    <path d="M6 6h10"></path>
+                    <path d="M6 10h10"></path>
+                </svg>
+            </div>
+            <div class="brand-text-block">
+                <div class="brand-title">CRKH <span>Hub</span></div>
+                <div class="brand-sub">Campus Resource Exchange</div>
+            </div>
+        </a>
+
+        <!-- Center E-Commerce Search Bar (Liquid Glass) -->
+        <form action="/resources" method="get" class="nav-search-bar">
+            <div class="nav-search-inner">
+                <svg class="nav-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" name="q" class="nav-search-input" placeholder="Search books, calculators, laptops, notes, lab equipment..." value="">
+                <span class="nav-search-badge">Press /</span>
+            </div>
+        </form>
+
+        <!-- Right Navigation Items -->
+        <div class="nav-actions">
+            <!-- Authenticated Links -->
+            
+
+            <!-- Public Anonymous Links -->
+            <div style="display:flex; align-items:center; gap:0.75rem;">
+                <a href="/resources" class="btn btn-secondary btn-sm">Explore Marketplace</a>
+                <a href="/login" class="btn btn-soft-blue btn-sm">Sign In</a>
+                <a href="/register" class="btn btn-primary btn-sm">Join CRKH</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Secondary Category Ribbon (E-Commerce style discovery) -->
+    <div class="category-ribbon">
+        <div class="category-ribbon-inner">
+            <a href="/resources" class="cat-pill active" data-filter="ALL">
+                <span>⚡ All Resources</span>
+            </a>
+            <a href="/resources?category=TEXTBOOK" class="cat-pill" data-filter="TEXTBOOK">
+                <span>📚 Textbooks & Books</span>
+            </a>
+            <a href="/resources?category=CALCULATOR" class="cat-pill" data-filter="CALCULATOR">
+                <span>🔢 Scientific Calculators</span>
+            </a>
+            <a href="/resources?category=ELECTRONICS" class="cat-pill" data-filter="ELECTRONICS">
+                <span>🎧 Headphones & Tech</span>
+            </a>
+            <a href="/resources?category=LAB_EQUIPMENT" class="cat-pill" data-filter="LAB_EQUIPMENT">
+                <span>🔬 Lab & Arduino Gear</span>
+            </a>
+            <a href="/resources?category=ADAPTER" class="cat-pill" data-filter="ADAPTER">
+                <span>🔌 USB-C Hubs & Adapters</span>
+            </a>
+            <a href="/resources?category=HDMI_CABLE" class="cat-pill" data-filter="HDMI_CABLE">
+                <span>🖥️ HDMI & Display Cables</span>
+            </a>
+            <a href="/resources?category=NOTES" class="cat-pill" data-filter="NOTES">
+                <span>📝 Course Notes</span>
+            </a>
+            <a href="/resources?category=SPORTS" class="cat-pill" data-filter="SPORTS">
+                <span>🏸 Sports Equipment</span>
+            </a>
+            <a href="/resources?category=STATIONERY" class="cat-pill" data-filter="STATIONERY">
+                <span>✏️ Drafting & Stationery</span>
+            </a>
+            <a href="/resources?category=HOSTEL_ITEMS" class="cat-pill" data-filter="HOSTEL_ITEMS">
+                <span>🎒 Hostel Essentials</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom App Dock -->
+    <nav class="mobile-bottom-dock">
+        <a href="/" class="dock-item">
+            <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+            <span>Home</span>
+        </a>
+        <a href="/resources" class="dock-item active">
+            <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span>Explore</span>
+        </a>
+        <a href="/requests" class="dock-item">
+            <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
+            <span>Requests</span>
+        </a>
+        <a href="/borrowings" class="dock-item">
+            <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"></rect></svg>
+            <span>Borrowings</span>
+        </a>
+        <a href="/knowledge-vault" class="dock-item">
+            <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            <span>Vault</span>
+        </a>
+        <a href="/profile" class="dock-item">
+            <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <span>Profile</span>
+        </a>
+    </nav>
+</header>
+
+    <main class="container" style="max-width:780px; padding-top:2.5rem; padding-bottom:4rem;">
+        <div style="margin-bottom:1.5rem;">
+            <a href="/resources" class="btn btn-secondary btn-sm" style="display:inline-flex; align-items:center; gap:0.4rem;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                Back to Campus Catalog
+            </a>
+        </div>
+
+        <div class="glass-card" style="padding:2.5rem; position:relative; overflow:hidden;">
+            <!-- Caustic light refraction blob -->
+            <div style="position:absolute; top:-40px; right:-40px; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle, rgba(108,142,245,0.18) 0%, transparent 70%); filter:blur(40px); pointer-events:none;"></div>
+
+            <div style="display:flex; align-items:center; gap:1rem; margin-bottom:2rem;">
+                <div style="width:48px; height:48px; border-radius:14px; background:linear-gradient(135deg, rgba(108,142,245,0.2), rgba(155,138,251,0.2)); border:1px solid rgba(108,142,245,0.3); display:grid; place-items:center; color:var(--accent-blue); font-size:1.5rem;">
+                    ✦
+                </div>
+                <div>
+                    <h1 style="font-size:1.85rem; font-weight:800; color:var(--text-main); letter-spacing:-0.03em; margin:0;">Share or Exchange Resource</h1>
+                    <p style="font-size:0.9rem; color:var(--text-muted); margin:0.25rem 0 0 0;">List textbooks, calculators, cables, lab gear with your preferred exchange or borrowing terms</p>
+                </div>
+            </div>
+
+            <!-- Form with enctype multipart/form-data for image uploads -->
+            <form action="/resources/new" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label class="form-label" for="title">Resource Title *</label>
+                    <input type="text" id="title" name="title" class="form-control" placeholder="e.g. Casio fx-991EX ClassWiz or DBMS 7th Edition" required>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
+                    <div class="form-group">
+                        <label class="form-label" for="category">Category *</label>
+                        <select id="category" name="category" class="form-control" required>
+                            <option value="TEXTBOOK">TEXTBOOK</option>
+                            <option value="CALCULATOR">CALCULATOR</option>
+                            <option value="ELECTRONICS">ELECTRONICS</option>
+                            <option value="HDMI_CABLE">HDMI_CABLE</option>
+                            <option value="ADAPTER">ADAPTER</option>
+                            <option value="LAB_EQUIPMENT">LAB_EQUIPMENT</option>
+                            <option value="NOTES">NOTES</option>
+                            <option value="STUDY_MATERIALS">STUDY_MATERIALS</option>
+                            <option value="SPORTS">SPORTS</option>
+                            <option value="STATIONERY">STATIONERY</option>
+                            <option value="HOSTEL_ITEMS">HOSTEL_ITEMS</option>
+                            <option value="OTHER">OTHER</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="itemCondition">Physical Condition *</label>
+                        <select id="itemCondition" name="itemCondition" class="form-control">
+                            <option value="Like New">Like New (Mint condition)</option>
+                            <option value="Excellent">Excellent (Minor cosmetic marks)</option>
+                            <option value="Good" selected>Good (Fully functional)</option>
+                            <option value="Fair">Fair (Well used / readable)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Product Photo Upload Section -->
+                <div class="form-group" style="background:rgba(255,255,255,0.5); border:2px dashed rgba(108,142,245,0.35); border-radius:18px; padding:1.5rem; text-align:center; transition:border-color 0.2s ease;">
+                    <label class="form-label" style="margin-bottom:0.4rem; display:block; font-weight:700;">
+                        📸 Upload Product Photo
+                    </label>
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin:0 0 1rem 0;">Upload a clear photo of your item (PNG, JPG, WebP) or provide an image link below</p>
+                    
+                    <input type="file" id="imageFile" name="imageFile" accept="image/*" class="form-control" style="max-width:320px; margin:0 auto 0.75rem auto;" onchange="previewUploadImage(event)">
+                    
+                    <div id="imagePreviewContainer" style="display:none; margin-top:1rem;">
+                        <img id="imagePreview" src="#" alt="Preview" style="max-height:160px; border-radius:12px; border:1px solid rgba(0,0,0,0.1); box-shadow:0 8px 20px rgba(0,0,0,0.06);">
+                        <p style="font-size:0.75rem; color:var(--mint); font-weight:700; margin:0.35rem 0 0 0;">✓ Ready to upload</p>
+                    </div>
+
+                    <div style="font-size:0.8rem; color:var(--text-dim); margin-top:0.75rem;">
+                        Or optional image URL:
+                        <input type="url" id="imageUrl" name="imageUrl" class="form-control" style="margin-top:0.35rem; font-size:0.85rem;" placeholder="https://... or leave blank for automatic studio illustration">
+                    </div>
+                </div>
+
+                <!-- Exchange & Mutual Satisfaction Model Section -->
+                <div style="background:linear-gradient(135deg, rgba(108,142,245,0.06), rgba(155,138,251,0.06)); border:1px solid rgba(108,142,245,0.25); border-radius:18px; padding:1.5rem; margin-bottom:1.5rem;">
+                    <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:0.75rem;">
+                        <span style="font-size:1.2rem;">🤝</span>
+                        <h3 style="font-size:1.05rem; font-weight:800; color:var(--text-main); margin:0;">Exchange & Sharing Terms (Mutual Satisfaction)</h3>
+                    </div>
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin:0 0 1.25rem 0;">Decide how you want to share this item so both you (the provider) and the borrower are satisfied.</p>
+
+                    <div class="form-group">
+                        <label class="form-label" for="sharingType">Sharing / Exchange Mode *</label>
+                        <select id="sharingType" name="sharingType" class="form-control" onchange="updateExchangeHints(this.value)">
+                            <option value="FREE_BORROW">🌿 Free Campus Borrow (Community goodwill, +5 Reputation on return)</option>
+                            <option value="ITEM_EXCHANGE" selected>🔄 Direct Item Exchange (Swap for a book, calculator, or cable you need)</option>
+                            <option value="SKILL_SWAP">💡 Skill / Knowledge Swap (Exchange for code review, tutoring, or lab help)</option>
+                            <option value="SECURITY_PLEDGE">🛡️ Refundable Security Pledge (Refundable deposit or student ID collateral)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="exchangePreference" id="exchangePrefLabel">What do you want in exchange? *</label>
+                        <input type="text" id="exchangePreference" name="exchangePreference" class="form-control" placeholder="e.g. Looking to swap for OS Textbook, USB-C hub, or Calculus Notes">
+                        <span id="exchangeHint" style="font-size:0.75rem; color:var(--text-dim); margin-top:0.35rem; display:block;">Specify the exact physical gear, notes, or course help you'd like the acceptor to bring.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="satisfactionTerms">Mutual Satisfaction & Verification Terms</label>
+                        <input type="text" id="satisfactionTerms" name="satisfactionTerms" class="form-control" value="Physical inspection on handover; both confirm working condition before QR scan" placeholder="e.g. Test all ports together at library pickup; return undamaged">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="location">Pickup Location on Campus *</label>
+                    <input type="text" id="location" name="location" class="form-control" placeholder="e.g. Central Library 2F, Engineering Quad, or Science Block" required>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
+                    <div class="form-group">
+                        <label class="form-label" for="availabilityFrom">Available From *</label>
+                        <input type="date" id="availabilityFrom" name="availabilityFrom" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="availabilityTo">Available Until *</label>
+                        <input type="date" id="availabilityTo" name="availabilityTo" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="description">Detailed Description & Included Accessories</label>
+                    <textarea id="description" name="description" class="form-control" rows="3" placeholder="Specify edition, included power cables, manual, or any known cosmetic quirks..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:1.5rem; font-weight:700;">
+                    ✦ Publish Campus Resource Listing
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 Campus Resource & Knowledge Hub (CRKH) • Liquid Glass Interface</p>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script>
+        function previewUploadImage(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    const img = document.getElementById('imagePreview');
+                    img.src = evt.target.result;
+                    document.getElementById('imagePreviewContainer').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function updateExchangeHints(val) {
+            const label = document.getElementById('exchangePrefLabel');
+            const hint = document.getElementById('exchangeHint');
+            const input = document.getElementById('exchangePreference');
+            if (val === 'FREE_BORROW') {
+                label.innerText = 'Lender Note / Expectations (Optional)';
+                hint.innerText = 'Free community loan. E.g. "Free for exams! Just please return with battery/case intact."';
+                input.placeholder = 'e.g. Free to borrow for midterms! Return clean and undamaged.';
+            } else if (val === 'ITEM_EXCHANGE') {
+                label.innerText = 'Item Desired in Exchange *';
+                hint.innerText = 'Specify which textbook, calculator, adapter, or notes you want to swap for.';
+                input.placeholder = 'e.g. Looking to exchange for TI-84 calculator or Operating Systems textbook';
+            } else if (val === 'SKILL_SWAP') {
+                label.innerText = 'Knowledge / Peer Help Desired in Exchange *';
+                hint.innerText = 'Specify what tutoring or review help satisfies your exchange.';
+                input.placeholder = 'e.g. 45-min Python lab debugging or Calculus 2 exam review';
+            } else if (val === 'SECURITY_PLEDGE') {
+                label.innerText = 'Refundable Security Deposit / Collateral Terms *';
+                hint.innerText = 'Protects high-value gear. Refunded immediately upon return QR check.';
+                input.placeholder = 'e.g. Refundable $15 campus safety pledge or Student ID collateral';
+            }
+        }
+
+        // Set default dates
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toISOString().split('T')[0];
+            const nextMonth = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+            document.getElementById('availabilityFrom').value = today;
+            document.getElementById('availabilityTo').value = nextMonth;
+        });
+    </script>
+</body>
+</html>
