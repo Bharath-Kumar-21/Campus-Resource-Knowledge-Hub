@@ -2,6 +2,17 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/resources/:id", "destination": "/resources/:id.html" }
+    { "source": "/resources/:id", "destination": "/resources/:id.html" },
+    { "source": "/borrowings/create", "destination": "/borrowings/create.html" },
+    { "source": "/borrowings", "destination": "/borrowings.html" },
+    { "source": "/requests/new", "destination": "/requests.html" },
+    { "source": "/requests", "destination": "/requests.html" },
+    { "source": "/dashboard", "destination": "/dashboard.html" },
+    { "source": "/profile", "destination": "/profile.html" },
+    { "source": "/knowledge-vault", "destination": "/knowledge-vault.html" },
+    { "source": "/notifications", "destination": "/notifications.html" },
+    { "source": "/login", "destination": "/login.html" },
+    { "source": "/register", "destination": "/register.html" },
+    { "source": "/admin", "destination": "/admin.html" }
   ]
 }

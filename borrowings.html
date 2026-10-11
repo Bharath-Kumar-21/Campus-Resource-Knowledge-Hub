@@ -159,12 +159,37 @@
             <p style="color:var(--text-muted); font-size:0.95rem; margin:0.35rem 0 0 0;">
                 Track physical campus resources in your possession and manage exchange proposals for items you listed.
             </p>
-        </div>
+                </div>
 
-        
-        
-        
-        
+        <!-- Dynamic Alert Banners -->
+        <div id="alertRequested" class="alert alert-success" style="display:none; margin-bottom:1.5rem; align-items:center; gap:0.75rem; border-radius:16px; padding:1rem 1.25rem;">
+            <span style="font-size:1.35rem;">✅</span>
+            <div>
+                <strong style="font-size:0.95rem; display:block; margin-bottom:0.15rem;">Exchange Request Submitted Successfully!</strong>
+                <span style="font-size:0.86rem; color:var(--text-muted);">Your request and proposed exchange terms were sent to the owner! You will be notified upon agreement.</span>
+            </div>
+        </div>
+        <div id="alertApproved" class="alert alert-success" style="display:none; margin-bottom:1.5rem; align-items:center; gap:0.75rem; border-radius:16px; padding:1rem 1.25rem;">
+            <span style="font-size:1.35rem;">🤝</span>
+            <div>
+                <strong style="font-size:0.95rem; display:block; margin-bottom:0.15rem;">Exchange Proposal Accepted!</strong>
+                <span style="font-size:0.86rem; color:var(--text-muted);">Mutual satisfaction agreement established. Proceed to QR handover.</span>
+            </div>
+        </div>
+        <div id="alertDeclined" class="alert alert-info" style="display:none; margin-bottom:1.5rem; align-items:center; gap:0.75rem; border-radius:16px; padding:1rem 1.25rem;">
+            <span style="font-size:1.35rem;">ℹ️</span>
+            <div>
+                <strong style="font-size:0.95rem; display:block; margin-bottom:0.15rem;">Request Update</strong>
+                <span style="font-size:0.86rem; color:var(--text-muted);">The exchange request was declined by the owner.</span>
+            </div>
+        </div>
+        <div id="alertReturned" class="alert alert-success" style="display:none; margin-bottom:1.5rem; align-items:center; gap:0.75rem; border-radius:16px; padding:1rem 1.25rem;">
+            <span style="font-size:1.35rem;">🎉</span>
+            <div>
+                <strong style="font-size:0.95rem; display:block; margin-bottom:0.15rem;">Return & Mutual Satisfaction Confirmed!</strong>
+                <span style="font-size:0.86rem; color:var(--text-muted);">Item returned and verified. +5 Campus Reputation points awarded!</span>
+            </div>
+        </div>
 
         <!-- Section 1: Incoming Exchange Proposals (Provider / Lender View) -->
         <div class="glass-card" style="padding:2rem; margin-bottom:2.5rem;">
@@ -207,7 +232,7 @@
                             <th>QR Handover / Action</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="borrowingsTableBody">
                         <tr>
                             <td style="font-weight:700; color:var(--text-main);">HDMI Cable (2m High-Speed Braided 4K)</td>
                             <td>Ananya Sharma</td>

@@ -6,20 +6,80 @@
     <title>Page Not Found (404) — Campus Resource & Knowledge Hub</title>
     <link rel="stylesheet" href="/css/style.css">
     <script>
-        // Automatic Fallback Routing for Static Hosts (e.g., GitHub Pages or subfolder deployments)
+        // Automatic Fallback Routing for Static Hosts (e.g., Vercel, GitHub Pages)
         (function() {
             var path = window.location.pathname;
-            // Match /resources/(\d+)
+            var search = window.location.search;
+
+            // 1. Direct Intercept for Borrowing Submission (/borrowings/create)
+            if (path.indexOf('/borrowings/create') !== -1) {
+                window.location.replace('/borrowings.html?requested=true');
+                return;
+            }
+
+            // 2. Resource Details (/resources/:id)
             var match = path.match(/\/resources\/(\d+)\/?$/);
             if (match && match[1]) {
                 var id = parseInt(match[1], 10);
                 if (id >= 1 && id <= 14) {
-                    window.location.replace('/resources/' + id + '.html');
+                    window.location.replace('/resources/' + id + '.html' + search);
                     return;
                 }
             }
+
+            // 3. Resources catalog (/resources or /resources/new)
+            if (path.indexOf('/resources/new') !== -1) {
+                window.location.replace('/resources/new.html' + search);
+                return;
+            }
             if (path.endsWith('/resources') || path.endsWith('/resources/')) {
-                window.location.replace('/resources.html');
+                window.location.replace('/resources.html' + search);
+                return;
+            }
+
+            // 4. Requests (/requests or /requests/new)
+            if (path.indexOf('/requests/new') !== -1) {
+                window.location.replace('/requests.html?created=true');
+                return;
+            }
+            if (path.endsWith('/requests') || path.endsWith('/requests/')) {
+                window.location.replace('/requests.html' + search);
+                return;
+            }
+
+            // 5. Borrowings ledger (/borrowings)
+            if (path.endsWith('/borrowings') || path.endsWith('/borrowings/')) {
+                window.location.replace('/borrowings.html' + (search || '?requested=true'));
+                return;
+            }
+
+            // 6. User Portal Pages
+            if (path.endsWith('/dashboard') || path.endsWith('/dashboard/')) {
+                window.location.replace('/dashboard.html');
+                return;
+            }
+            if (path.endsWith('/profile') || path.endsWith('/profile/')) {
+                window.location.replace('/profile.html');
+                return;
+            }
+            if (path.endsWith('/knowledge-vault') || path.endsWith('/knowledge-vault/')) {
+                window.location.replace('/knowledge-vault.html');
+                return;
+            }
+            if (path.endsWith('/notifications') || path.endsWith('/notifications/')) {
+                window.location.replace('/notifications.html');
+                return;
+            }
+            if (path.endsWith('/admin') || path.endsWith('/admin/')) {
+                window.location.replace('/admin.html');
+                return;
+            }
+            if (path.endsWith('/login') || path.endsWith('/login/')) {
+                window.location.replace('/login.html');
+                return;
+            }
+            if (path.endsWith('/register') || path.endsWith('/register/')) {
+                window.location.replace('/register.html');
                 return;
             }
         })();
