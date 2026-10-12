@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api, SEED_RESOURCES } from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import { getResourceImageUrl, handleImageError } from '../utils/imageHelper';
 import {
   Layers,
   ArrowRightLeft,
@@ -260,9 +261,9 @@ export default function DashboardPage() {
                 gap: '12px'
               }}>
                 <img
-                  src={res.imageUrl || '/images/products/default.svg'}
+                  src={getResourceImageUrl(res)}
                   alt=""
-                  onError={(e) => { e.currentTarget.src = '/images/products/default.svg'; }}
+                  onError={(e) => handleImageError(e, res)}
                   style={{ width: '48px', height: '48px', borderRadius: '10px', objectFit: 'cover' }}
                 />
                 <div style={{ flex: 1 }}>

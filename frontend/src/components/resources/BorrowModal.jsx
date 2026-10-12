@@ -4,6 +4,7 @@ import { api } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 import { useNavigate } from 'react-router-dom';
+import { getResourceImageUrl, handleImageError } from '../../utils/imageHelper';
 
 export default function BorrowModal({ resource, onClose, onSuccess }) {
   const { user } = useAuth();
@@ -94,8 +95,9 @@ export default function BorrowModal({ resource, onClose, onSuccess }) {
           border: '1px solid rgba(108, 142, 245, 0.15)'
         }}>
           <img
-            src={resource.imageUrl || '/images/products/default.svg'}
+            src={getResourceImageUrl(resource)}
             alt=""
+            onError={(e) => handleImageError(e, resource)}
             style={{ width: '56px', height: '56px', borderRadius: '10px', objectFit: 'cover' }}
           />
           <div>

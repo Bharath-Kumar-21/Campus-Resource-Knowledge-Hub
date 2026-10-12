@@ -225,6 +225,22 @@ export const SEED_RESOURCES = [
     description: 'Original Apple space gray woven MagSafe 3 cable. Pairs with USB-C power adapters for 140W fast charging.',
     imageUrl: '/images/products/usbc_adapter.jpg',
     status: 'AVAILABLE'
+  },
+  {
+    id: 15,
+    title: 'Logitech C920 HD Pro Webcam',
+    ownerName: 'Marcus Chen',
+    ownerId: 8,
+    ownerReputation: 98,
+    category: 'ELECTRONICS',
+    sharingMode: 'Free Borrow',
+    availableFrom: '2026-10-08',
+    availableUntil: '2026-10-30',
+    pickupLocation: 'Computer Science Block B, Lab 102',
+    condition: 'LIKE_NEW',
+    description: 'Full HD 1080p video calling with stereo microphones. Ideal for campus online interviews and presentation recordings.',
+    imageUrl: '/images/products/webcam.jpg',
+    status: 'AVAILABLE'
   }
 ];
 

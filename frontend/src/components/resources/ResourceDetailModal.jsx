@@ -1,5 +1,6 @@
 import React from 'react';
 import { X, Calendar, MapPin, ShieldCheck, CheckCircle2, User, Award, ArrowRight } from 'lucide-react';
+import { getResourceImageUrl, handleImageError } from '../../utils/imageHelper';
 
 export default function ResourceDetailModal({ resource, onClose, onBorrow }) {
   return (
@@ -8,9 +9,9 @@ export default function ResourceDetailModal({ resource, onClose, onBorrow }) {
         {/* Banner Image */}
         <div style={{ position: 'relative', height: '240px', width: '100%', background: '#F1F4F9' }}>
           <img
-            src={resource.imageUrl || '/images/products/default.svg'}
+            src={getResourceImageUrl(resource)}
             alt={resource.title}
-            onError={(e) => { e.target.src = '/images/products/default.svg'; }}
+            onError={(e) => handleImageError(e, resource)}
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
           <button

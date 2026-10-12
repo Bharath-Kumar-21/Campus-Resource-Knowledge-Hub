@@ -337,7 +337,9 @@ public class DataInitializer implements CommandLineRunner {
             String t = r.getTitle().toLowerCase();
             String matchedImage = null;
 
-            if (t.contains("casio")) {
+            if (t.contains("webcam") || t.contains("camera") || t.contains("logitech") || t.contains("c920")) {
+                matchedImage = "/images/products/webcam.jpg";
+            } else if (t.contains("casio")) {
                 matchedImage = "/images/products/casio_calculator.jpg";
             } else if (t.contains("ti-84") || t.contains("graphing")) {
                 matchedImage = "/images/products/ti84_calculator.jpg";
@@ -347,10 +349,10 @@ public class DataInitializer implements CommandLineRunner {
                 matchedImage = "/images/products/dbms_book.jpg";
             } else if (t.contains("java") || t.contains("programming")) {
                 matchedImage = "/images/products/java_book.jpg";
-            } else if (t.contains("hdmi") || t.contains("cable")) {
-                matchedImage = "/images/products/hdmi_cable.jpg";
             } else if (t.contains("adapter") || t.contains("usb-c") || t.contains("hub")) {
                 matchedImage = "/images/products/usbc_adapter.jpg";
+            } else if (t.contains("hdmi") || t.contains("cable")) {
+                matchedImage = "/images/products/hdmi_cable.jpg";
             } else if (t.contains("oscilloscope") || t.contains("breadboard")) {
                 matchedImage = "/images/products/breadboard_lab.jpg";
             } else if (t.contains("notes") || t.contains("network")) {

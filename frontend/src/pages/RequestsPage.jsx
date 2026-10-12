@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { api, SEED_RESOURCES } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { getResourceImageUrl, handleImageError } from '../utils/imageHelper';
 import BorrowModal from '../components/resources/BorrowModal';
 import {
   Sparkles,
@@ -324,9 +325,9 @@ export default function RequestsPage() {
                   alignItems: 'center'
                 }}>
                   <img
-                    src={item.imageUrl || '/images/products/default.svg'}
+                    src={getResourceImageUrl(item)}
                     alt=""
-                    onError={(e) => { e.currentTarget.src = '/images/products/default.svg'; }}
+                    onError={(e) => handleImageError(e, item)}
                     style={{ width: '60px', height: '60px', borderRadius: '12px', objectFit: 'cover' }}
                   />
                   <div style={{ flex: 1 }}>

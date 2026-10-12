@@ -1,5 +1,6 @@
 import React from 'react';
 import { Calendar, MapPin, User, ArrowRight, Eye, ShieldCheck, Sparkles, RefreshCw, Handshake } from 'lucide-react';
+import { getResourceImageUrl, handleImageError } from '../../utils/imageHelper';
 
 export default function ResourceCard({ resource, onQuickView, onBorrow }) {
   const getModeBadgeClass = (mode) => {
@@ -39,12 +40,9 @@ export default function ResourceCard({ resource, onQuickView, onBorrow }) {
         overflow: 'hidden'
       }}>
         <img
-          src={resource.imageUrl || '/images/products/default.svg'}
+          src={getResourceImageUrl(resource)}
           alt={resource.title}
-          onError={(e) => {
-            e.target.onerror = null;
-            e.target.src = '/images/products/default.svg';
-          }}
+          onError={(e) => handleImageError(e, resource)}
           style={{
             width: '100%',
             height: '100%',
