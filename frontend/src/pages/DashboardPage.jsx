@@ -260,8 +260,9 @@ export default function DashboardPage() {
                 gap: '12px'
               }}>
                 <img
-                  src={res.imageUrl}
+                  src={res.imageUrl || '/images/products/default.svg'}
                   alt=""
+                  onError={(e) => { e.currentTarget.src = '/images/products/default.svg'; }}
                   style={{ width: '48px', height: '48px', borderRadius: '10px', objectFit: 'cover' }}
                 />
                 <div style={{ flex: 1 }}>

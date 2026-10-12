@@ -324,8 +324,9 @@ export default function RequestsPage() {
                   alignItems: 'center'
                 }}>
                   <img
-                    src={item.imageUrl}
+                    src={item.imageUrl || '/images/products/default.svg'}
                     alt=""
+                    onError={(e) => { e.currentTarget.src = '/images/products/default.svg'; }}
                     style={{ width: '60px', height: '60px', borderRadius: '12px', objectFit: 'cover' }}
                   />
                   <div style={{ flex: 1 }}>

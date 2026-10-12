@@ -12,6 +12,11 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
+      '/uploads': {
+        target: process.env.VITE_BACKEND_URL || 'https://campus-resource-knowledge-hub-3.onrender.com',
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
   build: {

@@ -60,24 +60,34 @@ $$\text{Score} = 0.30 \times \text{Relevance} + 0.20 \times \text{Location} + 0.
 ## 🏗️ System Architecture
 
 ```mermaid
-graph TD
-    User([Student / Faculty / Admin]) -->|HTTPS / Browser| UI[Thymeleaf + Apple Liquid Glass UI]
-    
-    subgraph Spring Boot Backend (Port 8080)
-        UI --> Controller[Spring MVC Controllers & REST APIs]
-        Controller --> Security[Spring Security & Session Auth]
-        Security --> Services[Core Business Logic Services]
-        
-        Services --> MatchEngine[6-Factor Weighted Matching Engine]
-        Services --> QRService[Cryptographic ZXing QR Token Engine]
-        Services --> VaultService[Private Knowledge Vault Manager]
-        Services --> ResourceService[Resource & Exchange Lifecycle]
+flowchart TD
+    subgraph Client ["Client Interface (Vercel Cloud)"]
+        User["Student, Faculty, and Admin"]
+        SPA["React 18 SPA (Vite · Modern Glass UI)"]
+        User -->|Web Browser / Mobile| SPA
     end
-    
-    subgraph Data & Storage Layer
-        Services --> JPA[Spring Data JPA / Hibernate]
-        JPA --> MySQL[(MySQL 8.0 Database)]
-        VaultService --> LocalDisk[Persistent Upload Volume /uploads]
+
+    subgraph Backend ["Core Services (Render Cloud · Port 8080)"]
+        API["REST API and JWT Security Gateway"]
+        SPA -->|HTTPS / REST API| API
+
+        MatchEngine["6-Factor Intelligent Match Engine"]
+        QRService["ZXing Cryptographic QR Handover Engine"]
+        VaultService["Private Academic Knowledge Vault"]
+        ResourceService["Resource and Exchange Lifecycle Manager"]
+
+        API --> MatchEngine
+        API --> QRService
+        API --> VaultService
+        API --> ResourceService
+    end
+
+    subgraph Storage ["Cloud Persistence and Storage"]
+        DB[("Aiven Cloud MySQL 8.0 (TLS)")]
+        Disk["Persistent Document Vault (/uploads)"]
+
+        ResourceService -->|Spring Data JPA| DB
+        VaultService -->|Encrypted Storage| Disk
     end
 ```
 
