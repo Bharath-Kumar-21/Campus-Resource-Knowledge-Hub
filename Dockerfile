@@ -3,12 +3,12 @@ FROM maven:3.9.6-eclipse-temurin-21-alpine AS builder
 
 WORKDIR /build
 
-# Cache dependencies
-COPY pom.xml ./
-RUN mvn dependency:go-offline -B
+# Copy Maven project descriptor
+COPY backend/pom.xml ./pom.xml
+RUN mvn dependency:go-offline -B || true
 
 # Copy source code and package application
-COPY src ./src
+COPY backend/src ./src
 RUN mvn clean package -DskipTests -B
 
 # Stage 2: Minimal, secure JRE runtime
