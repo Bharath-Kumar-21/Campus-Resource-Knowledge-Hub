@@ -1,7 +1,7 @@
 // Campus Resource & Knowledge Hub (CRKH) - Client Controller & Interactions
 
-// Active Backend URL (Render Cloud Service)
-const BACKEND_URL = window.CRKH_BACKEND_URL || 'https://campus-resource-knowledge-hub-3.onrender.com';
+// Active Backend URL (Supports Vercel relative proxy & Render Cloud Service)
+const BACKEND_URL = window.CRKH_BACKEND_URL || '';
 window.BACKEND_URL = BACKEND_URL;
 if (!window.CRKH) window.CRKH = {};
 window.CRKH.backendUrl = BACKEND_URL;
@@ -77,7 +77,49 @@ document.addEventListener('DOMContentLoaded', () => {
   initStaticFormInterceptors();
   initBorrowingsPage();
   initRequestsPage();
+  initUserSession();
 });
+
+// 0. User Session Hydration
+function initUserSession() {
+  try {
+    const userJson = localStorage.getItem('CRKH_USER');
+    if (!userJson) return;
+    const user = JSON.parse(userJson);
+    if (!user || !user.name) return;
+
+    // Update greeting header on dashboard
+    const greetingSpans = document.querySelectorAll('h1 span');
+    greetingSpans.forEach(el => {
+      if (el.innerText === 'Bharath Kumar' || el.closest('h1')?.innerText.includes('Good Morning')) {
+        el.innerText = user.name;
+      }
+    });
+
+    // Update public navbar action links to reflect signed in user
+    const navActions = document.querySelector('.nav-actions');
+    const token = localStorage.getItem('CRKH_AUTH_TOKEN');
+    if (navActions && token) {
+      const publicLinks = navActions.querySelector('div[style*="gap:0.75rem"]');
+      if (publicLinks) {
+        publicLinks.innerHTML = `
+          <a href="/dashboard" class="btn btn-secondary btn-sm">Dashboard</a>
+          <span class="badge" style="background:var(--primary-light); color:var(--primary); font-weight:700;">${user.name}</span>
+          <a href="/logout" class="btn btn-sm btn-soft-blue" onclick="handleClientLogout(event)">Sign Out</a>
+        `;
+      }
+    }
+  } catch (e) {}
+}
+
+window.handleClientLogout = function(e) {
+  if (e) e.preventDefault();
+  localStorage.removeItem('CRKH_USER');
+  localStorage.removeItem('CRKH_AUTH_TOKEN');
+  document.cookie = "CRKH_AUTH_TOKEN=; path=/; max-age=0";
+  showToast('Logged out successfully', 'info');
+  setTimeout(() => window.location.href = '/login.html', 300);
+};
 
 // 1. Guaranteed Image Fallback System (Zero Broken Images)
 function initImageFallbacks() {
@@ -330,6 +372,7 @@ function initStaticFormInterceptors() {
 
     // D. Intercept Login (/perform_login)
     if (action.indexOf('/perform_login') !== -1) {
+      if (document.getElementById('loginForm')) return;
       e.preventDefault();
       const email = form.querySelector('[name="username"]')?.value || 'student1@college.edu';
       showToast('Signed in as ' + email, 'success');
@@ -342,6 +385,9 @@ function initStaticFormInterceptors() {
     // E. Intercept Logout (/logout)
     if (action.indexOf('/logout') !== -1) {
       e.preventDefault();
+      localStorage.removeItem('CRKH_USER');
+      localStorage.removeItem('CRKH_AUTH_TOKEN');
+      document.cookie = "CRKH_AUTH_TOKEN=; path=/; max-age=0";
       showToast('Logged out successfully', 'info');
       setTimeout(() => {
         window.location.href = '/login.html';

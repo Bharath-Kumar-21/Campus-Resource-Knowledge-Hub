@@ -132,7 +132,9 @@
             
             
 
-            <form action="/perform_login" method="post">
+            <div id="loginAlert" style="display:none; margin-bottom:1.25rem;" class="alert"></div>
+
+            <form id="loginForm" action="/perform_login" method="post">
                 <div class="form-group">
                     <label class="form-label" for="username">College Email</label>
                     <input type="email" id="username" name="username" class="form-control" placeholder="name@college.edu" required autofocus>
@@ -143,7 +145,7 @@
                     <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:0.75rem;">
+                <button type="submit" id="loginBtn" class="btn btn-primary btn-block btn-lg" style="margin-top:0.75rem;">
                     Sign In to Hub ➔
                 </button>
             </form>
@@ -176,5 +178,133 @@
     </div>
 
     <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const alertBox = document.getElementById('loginAlert');
+            const form = document.getElementById('loginForm');
+            const btn = document.getElementById('loginBtn');
+
+            // Check if redirected after registration
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('registered') === 'true') {
+                alertBox.className = 'alert alert-success';
+                alertBox.style.display = 'flex';
+                alertBox.innerText = 'Registration successful! Please sign in with your email and password.';
+            }
+
+            // Demo Fill Buttons
+            const fillBtns = document.querySelectorAll('[data-fill-email]');
+            fillBtns.forEach(b => {
+                b.addEventListener('click', () => {
+                    const email = b.getAttribute('data-fill-email');
+                    const pass = b.getAttribute('data-fill-pass');
+                    document.getElementById('username').value = email;
+                    document.getElementById('password').value = pass;
+                    if (window.showToast) window.showToast(`Selected demo credentials for ${email}`, 'info');
+                    // Quick-login automatically for demo speed
+                    setTimeout(() => form.dispatchEvent(new Event('submit', { cancelable: true })), 200);
+                });
+            });
+
+            // Form Submit Interception
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value;
+
+                btn.disabled = true;
+                btn.innerText = 'Signing In... ⏳';
+                alertBox.style.display = 'none';
+
+                try {
+                    // Try relative endpoint first (proxied cleanly by Vercel to Render)
+                    let res;
+                    try {
+                        res = await fetch('/api/auth/login', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email, password })
+                        });
+                    } catch (netErr) {
+                        const backendUrl = window.BACKEND_URL || 'https://campus-resource-knowledge-hub-3.onrender.com';
+                        res = await fetch(backendUrl + '/api/auth/login', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email, password })
+                        });
+                    }
+
+                    const data = await res.json();
+                    if (data.success && data.data?.token) {
+                        alertBox.className = 'alert alert-success';
+                        alertBox.style.display = 'flex';
+                        alertBox.innerText = `Welcome back, ${data.data.user?.name || email}! Launching dashboard...`;
+
+                        localStorage.setItem('CRKH_AUTH_TOKEN', data.data.token);
+                        document.cookie = "CRKH_AUTH_TOKEN=" + data.data.token + "; path=/; max-age=86400";
+                        if (data.data.user) {
+                            localStorage.setItem('CRKH_USER', JSON.stringify(data.data.user));
+                        }
+
+                        setTimeout(() => window.location.href = '/dashboard.html', 800);
+                        return;
+                    } else {
+                        // Check if registered locally
+                        const localUsers = JSON.parse(localStorage.getItem('crkh_registered_users') || '[]');
+                        const found = localUsers.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+                        if (found) {
+                            alertBox.className = 'alert alert-success';
+                            alertBox.style.display = 'flex';
+                            alertBox.innerText = `Welcome back, ${found.name}! Launching dashboard...`;
+                            localStorage.setItem('CRKH_USER', JSON.stringify({ id: found.id || Date.now(), name: found.name, email: found.email, role: found.role || 'STUDENT' }));
+                            localStorage.setItem('CRKH_AUTH_TOKEN', 'token-' + Date.now());
+                            setTimeout(() => window.location.href = '/dashboard.html', 800);
+                            return;
+                        }
+
+                        alertBox.className = 'alert alert-danger';
+                        alertBox.style.display = 'flex';
+                        alertBox.innerText = data.message || 'Invalid email or password. Please try again.';
+                        btn.disabled = false;
+                        btn.innerText = 'Sign In to Hub ➔';
+                    }
+                } catch (err) {
+                    console.warn('Backend login unavailable, checking local accounts:', err);
+                    // Demo fallback accounts and local registered accounts
+                    const demoPasswords = {
+                        'student1@college.edu': 'Student@123',
+                        'student2@college.edu': 'Student@123',
+                        'student3@college.edu': 'Student@123',
+                        'admin@college.edu': 'Admin@123'
+                    };
+                    const localUsers = JSON.parse(localStorage.getItem('crkh_registered_users') || '[]');
+                    const found = localUsers.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+
+                    if (found || demoPasswords[email.toLowerCase()] === password) {
+                        const userName = found ? found.name : email.split('@')[0];
+                        alertBox.className = 'alert alert-success';
+                        alertBox.style.display = 'flex';
+                        alertBox.innerText = `Welcome back, ${userName}! Launching dashboard...`;
+
+                        localStorage.setItem('CRKH_USER', JSON.stringify({
+                            id: found?.id || 1,
+                            name: userName,
+                            email: email,
+                            role: found?.role || (email.startsWith('admin') ? 'ADMIN' : 'STUDENT')
+                        }));
+                        localStorage.setItem('CRKH_AUTH_TOKEN', 'demo-token-' + Date.now());
+                        setTimeout(() => window.location.href = '/dashboard.html', 800);
+                        return;
+                    }
+
+                    alertBox.className = 'alert alert-danger';
+                    alertBox.style.display = 'flex';
+                    alertBox.innerText = 'Server offline or invalid credentials. Please check your details.';
+                    btn.disabled = false;
+                    btn.innerText = 'Sign In to Hub ➔';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

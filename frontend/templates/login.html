@@ -1,13 +1,123 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In — CRKH</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body style="display:flex; flex-direction:column; min-height:100vh;">
-    <div th:replace="~{fragments/navbar :: header('login')}"></div>
+    <header class="header-wrapper">
+    <!-- Main Top Navigation -->
+    <div class="main-navbar">
+        <!-- Logo -->
+        <a href="./index.html" class="brand">
+            <div class="brand-icon-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                    <path d="M6 6h10"></path>
+                    <path d="M6 10h10"></path>
+                </svg>
+            </div>
+            <div class="brand-text-block">
+                <div class="brand-title">CRKH <span>Hub</span></div>
+                <div class="brand-sub">Campus Resource Exchange</div>
+            </div>
+        </a>
+
+        <!-- Center E-Commerce Search Bar (Liquid Glass) -->
+        <form action="./resources.html" method="get" class="nav-search-bar">
+            <div class="nav-search-inner">
+                <svg class="nav-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" name="q" class="nav-search-input" placeholder="Search books, calculators, laptops, notes, lab equipment..." value="">
+                <span class="nav-search-badge">Press /</span>
+            </div>
+        </form>
+
+        <!-- Right Navigation Items -->
+        <div class="nav-actions">
+            <!-- Authenticated Links -->
+            
+
+            <!-- Public Anonymous Links -->
+            <div style="display:flex; align-items:center; gap:0.75rem;">
+                <a href="./resources.html" class="btn btn-secondary btn-sm">Explore Marketplace</a>
+                <a href="./login.html" class="btn btn-soft-blue btn-sm">Sign In</a>
+                <a href="./register.html" class="btn btn-primary btn-sm">Join CRKH</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Secondary Category Ribbon (E-Commerce style discovery) -->
+    <div class="category-ribbon">
+        <div class="category-ribbon-inner">
+            <a href="./resources.html" class="cat-pill active" data-filter="ALL">
+                <span>⚡ All Resources</span>
+            </a>
+            <a href="/resources?category=TEXTBOOK" class="cat-pill" data-filter="TEXTBOOK">
+                <span>📚 Textbooks & Books</span>
+            </a>
+            <a href="/resources?category=CALCULATOR" class="cat-pill" data-filter="CALCULATOR">
+                <span>🔢 Scientific Calculators</span>
+            </a>
+            <a href="/resources?category=ELECTRONICS" class="cat-pill" data-filter="ELECTRONICS">
+                <span>🎧 Headphones & Tech</span>
+            </a>
+            <a href="/resources?category=LAB_EQUIPMENT" class="cat-pill" data-filter="LAB_EQUIPMENT">
+                <span>🔬 Lab & Arduino Gear</span>
+            </a>
+            <a href="/resources?category=ADAPTER" class="cat-pill" data-filter="ADAPTER">
+                <span>🔌 USB-C Hubs & Adapters</span>
+            </a>
+            <a href="/resources?category=HDMI_CABLE" class="cat-pill" data-filter="HDMI_CABLE">
+                <span>🖥️ HDMI & Display Cables</span>
+            </a>
+            <a href="/resources?category=NOTES" class="cat-pill" data-filter="NOTES">
+                <span>📝 Course Notes</span>
+            </a>
+            <a href="/resources?category=SPORTS" class="cat-pill" data-filter="SPORTS">
+                <span>🏸 Sports Equipment</span>
+            </a>
+            <a href="/resources?category=STATIONERY" class="cat-pill" data-filter="STATIONERY">
+                <span>✏️ Drafting & Stationery</span>
+            </a>
+            <a href="/resources?category=HOSTEL_ITEMS" class="cat-pill" data-filter="HOSTEL_ITEMS">
+                <span>🎒 Hostel Essentials</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom App Dock -->
+    <nav class="mobile-bottom-dock">
+        <a href="./index.html" class="dock-item">
+            <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+            <span>Home</span>
+        </a>
+        <a href="./resources.html" class="dock-item">
+            <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span>Explore</span>
+        </a>
+        <a href="/requests" class="dock-item">
+            <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
+            <span>Requests</span>
+        </a>
+        <a href="/borrowings" class="dock-item">
+            <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"></rect></svg>
+            <span>Borrowings</span>
+        </a>
+        <a href="/knowledge-vault" class="dock-item">
+            <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            <span>Vault</span>
+        </a>
+        <a href="/profile" class="dock-item">
+            <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <span>Profile</span>
+        </a>
+    </nav>
+</header>
 
     <div class="container" style="flex:1; display:grid; place-items:center; padding:3.5rem 1rem;">
         <div class="card" style="width:100%; max-width:480px; padding:2.75rem; box-shadow:var(--shadow-liquid-modal); position:relative;">
@@ -19,14 +129,12 @@
                 <p style="color:var(--text-muted); font-size:0.9rem;">Sign in with your verified campus email</p>
             </div>
 
-            <div th:if="${param.error}" class="alert alert-danger">
-                <span>⚠️</span> Invalid college email or password.
-            </div>
-            <div th:if="${param.logout}" class="alert alert-info">
-                <span>✅</span> You have been securely signed out.
-            </div>
+            
+            
 
-            <form th:action="@{/perform_login}" method="post">
+            <div id="loginAlert" style="display:none; margin-bottom:1.25rem;" class="alert"></div>
+
+            <form id="loginForm" action="/perform_login" method="post">
                 <div class="form-group">
                     <label class="form-label" for="username">College Email</label>
                     <input type="email" id="username" name="username" class="form-control" placeholder="name@college.edu" required autofocus>
@@ -37,7 +145,7 @@
                     <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:0.75rem;">
+                <button type="submit" id="loginBtn" class="btn btn-primary btn-block btn-lg" style="margin-top:0.75rem;">
                     Sign In to Hub ➔
                 </button>
             </form>
@@ -64,11 +172,139 @@
             </div>
 
             <div style="text-align:center; margin-top:1.5rem; font-size:0.88rem; color:var(--text-muted);">
-                Don't have an account? <a th:href="@{/register}" style="color:var(--primary); font-weight:700;">Register here</a>
+                Don't have an account? <a href="./register.html" style="color:var(--primary); font-weight:700;">Register here</a>
             </div>
         </div>
     </div>
 
-    <script th:src="@{/js/main.js}"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const alertBox = document.getElementById('loginAlert');
+            const form = document.getElementById('loginForm');
+            const btn = document.getElementById('loginBtn');
+
+            // Check if redirected after registration
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('registered') === 'true') {
+                alertBox.className = 'alert alert-success';
+                alertBox.style.display = 'flex';
+                alertBox.innerText = 'Registration successful! Please sign in with your email and password.';
+            }
+
+            // Demo Fill Buttons
+            const fillBtns = document.querySelectorAll('[data-fill-email]');
+            fillBtns.forEach(b => {
+                b.addEventListener('click', () => {
+                    const email = b.getAttribute('data-fill-email');
+                    const pass = b.getAttribute('data-fill-pass');
+                    document.getElementById('username').value = email;
+                    document.getElementById('password').value = pass;
+                    if (window.showToast) window.showToast(`Selected demo credentials for ${email}`, 'info');
+                    // Quick-login automatically for demo speed
+                    setTimeout(() => form.dispatchEvent(new Event('submit', { cancelable: true })), 200);
+                });
+            });
+
+            // Form Submit Interception
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value;
+
+                btn.disabled = true;
+                btn.innerText = 'Signing In... ⏳';
+                alertBox.style.display = 'none';
+
+                try {
+                    // Try relative endpoint first (proxied cleanly by Vercel to Render)
+                    let res;
+                    try {
+                        res = await fetch('/api/auth/login', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email, password })
+                        });
+                    } catch (netErr) {
+                        const backendUrl = window.BACKEND_URL || 'https://campus-resource-knowledge-hub-3.onrender.com';
+                        res = await fetch(backendUrl + '/api/auth/login', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email, password })
+                        });
+                    }
+
+                    const data = await res.json();
+                    if (data.success && data.data?.token) {
+                        alertBox.className = 'alert alert-success';
+                        alertBox.style.display = 'flex';
+                        alertBox.innerText = `Welcome back, ${data.data.user?.name || email}! Launching dashboard...`;
+
+                        localStorage.setItem('CRKH_AUTH_TOKEN', data.data.token);
+                        document.cookie = "CRKH_AUTH_TOKEN=" + data.data.token + "; path=/; max-age=86400";
+                        if (data.data.user) {
+                            localStorage.setItem('CRKH_USER', JSON.stringify(data.data.user));
+                        }
+
+                        setTimeout(() => window.location.href = '/dashboard.html', 800);
+                        return;
+                    } else {
+                        // Check if registered locally
+                        const localUsers = JSON.parse(localStorage.getItem('crkh_registered_users') || '[]');
+                        const found = localUsers.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+                        if (found) {
+                            alertBox.className = 'alert alert-success';
+                            alertBox.style.display = 'flex';
+                            alertBox.innerText = `Welcome back, ${found.name}! Launching dashboard...`;
+                            localStorage.setItem('CRKH_USER', JSON.stringify({ id: found.id || Date.now(), name: found.name, email: found.email, role: found.role || 'STUDENT' }));
+                            localStorage.setItem('CRKH_AUTH_TOKEN', 'token-' + Date.now());
+                            setTimeout(() => window.location.href = '/dashboard.html', 800);
+                            return;
+                        }
+
+                        alertBox.className = 'alert alert-danger';
+                        alertBox.style.display = 'flex';
+                        alertBox.innerText = data.message || 'Invalid email or password. Please try again.';
+                        btn.disabled = false;
+                        btn.innerText = 'Sign In to Hub ➔';
+                    }
+                } catch (err) {
+                    console.warn('Backend login unavailable, checking local accounts:', err);
+                    // Demo fallback accounts and local registered accounts
+                    const demoPasswords = {
+                        'student1@college.edu': 'Student@123',
+                        'student2@college.edu': 'Student@123',
+                        'student3@college.edu': 'Student@123',
+                        'admin@college.edu': 'Admin@123'
+                    };
+                    const localUsers = JSON.parse(localStorage.getItem('crkh_registered_users') || '[]');
+                    const found = localUsers.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+
+                    if (found || demoPasswords[email.toLowerCase()] === password) {
+                        const userName = found ? found.name : email.split('@')[0];
+                        alertBox.className = 'alert alert-success';
+                        alertBox.style.display = 'flex';
+                        alertBox.innerText = `Welcome back, ${userName}! Launching dashboard...`;
+
+                        localStorage.setItem('CRKH_USER', JSON.stringify({
+                            id: found?.id || 1,
+                            name: userName,
+                            email: email,
+                            role: found?.role || (email.startsWith('admin') ? 'ADMIN' : 'STUDENT')
+                        }));
+                        localStorage.setItem('CRKH_AUTH_TOKEN', 'demo-token-' + Date.now());
+                        setTimeout(() => window.location.href = '/dashboard.html', 800);
+                        return;
+                    }
+
+                    alertBox.className = 'alert alert-danger';
+                    alertBox.style.display = 'flex';
+                    alertBox.innerText = 'Server offline or invalid credentials. Please check your details.';
+                    btn.disabled = false;
+                    btn.innerText = 'Sign In to Hub ➔';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
