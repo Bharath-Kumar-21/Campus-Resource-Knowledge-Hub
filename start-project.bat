@@ -24,19 +24,23 @@ if %ERRORLEVEL% NEQ 0 (
     echo Starting Spring Boot Backend...
     start "CRKH Backend Server" cmd.exe /k "cd /d D:\CRKH\backend && java -jar target\backend-1.0.0.jar"
     echo Waiting for application to initialize...
-    ping 127.0.0.1 -n 12 >nul
+    ping 127.0.0.1 -n 8 >nul
 ) else (
-    echo Backend is already running on http://localhost:8080
+    echo Backend is actively running on http://localhost:8080
 )
 
-:: 4. Launch browser
+:: 4. Launch React Frontend
 echo.
-echo [3/3] Launching CRKH in your default web browser...
-start http://localhost:8080
+echo [3/3] Starting React Frontend on port 5173...
+start "CRKH React Frontend" cmd.exe /k "cd /d D:\CRKH\frontend && npm run dev"
+ping 127.0.0.1 -n 3 >nul
+
+start http://localhost:5173
 
 echo.
 echo ======================================================================
-echo   CRKH is actively running at: http://localhost:8080
+echo   CRKH React App: http://localhost:5173
+echo   CRKH Backend API: http://localhost:8080
 echo   Database: Aiven Cloud MySQL (defaultdb)
 echo   Default Student Login: student1@college.edu / Student@123
 echo   Default Admin Login:   admin@college.edu / Admin@123

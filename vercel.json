@@ -1,4 +1,6 @@
 {
+  "buildCommand": "npm --prefix frontend install && npm --prefix frontend run build",
+  "outputDirectory": "frontend/dist",
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
@@ -7,68 +9,8 @@
       "destination": "https://campus-resource-knowledge-hub-3.onrender.com/api/$1"
     },
     {
-      "source": "/handover/:id",
-      "destination": "/handover.html"
-    },
-    {
-      "source": "/handover",
-      "destination": "/handover.html"
-    },
-    {
-      "source": "/perform_login",
-      "destination": "/login.html"
-    },
-    {
-      "source": "/logout",
-      "destination": "/login.html"
-    },
-    {
-      "source": "/resources/:id",
-      "destination": "/resources/:id.html"
-    },
-    {
-      "source": "/borrowings/create",
-      "destination": "/borrowings/create.html"
-    },
-    {
-      "source": "/borrowings",
-      "destination": "/borrowings.html"
-    },
-    {
-      "source": "/requests/new",
-      "destination": "/requests.html"
-    },
-    {
-      "source": "/requests",
-      "destination": "/requests.html"
-    },
-    {
-      "source": "/dashboard",
-      "destination": "/dashboard.html"
-    },
-    {
-      "source": "/profile",
-      "destination": "/profile.html"
-    },
-    {
-      "source": "/knowledge-vault",
-      "destination": "/knowledge-vault.html"
-    },
-    {
-      "source": "/notifications",
-      "destination": "/notifications.html"
-    },
-    {
-      "source": "/login",
-      "destination": "/login.html"
-    },
-    {
-      "source": "/register",
-      "destination": "/register.html"
-    },
-    {
-      "source": "/admin",
-      "destination": "/admin.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }

@@ -37,3 +37,10 @@ desktop.ini
 # Environment variables
 .env
 .env.local
+
+# Node & Frontend Build Artifacts
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+.vite/
