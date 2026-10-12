@@ -1,5 +1,11 @@
 ﻿// Campus Resource & Knowledge Hub (CRKH) - Client Controller & Interactions
 
+// Active Backend URL (Render Cloud Service)
+const BACKEND_URL = window.CRKH_BACKEND_URL || 'https://campus-resource-knowledge-hub-3.onrender.com';
+window.BACKEND_URL = BACKEND_URL;
+if (!window.CRKH) window.CRKH = {};
+window.CRKH.backendUrl = BACKEND_URL;
+
 // Fallback images map for categories
 const CATEGORY_FALLBACK_IMAGES = {
   'TEXTBOOK': '/images/products/dbms_book.jpg',

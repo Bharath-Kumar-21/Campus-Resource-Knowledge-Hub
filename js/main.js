@@ -1,5 +1,11 @@
 // Campus Resource & Knowledge Hub (CRKH) - Client Controller & Interactions
 
+// Active Backend URL (Render Cloud Service)
+const BACKEND_URL = window.CRKH_BACKEND_URL || 'https://campus-resource-knowledge-hub-3.onrender.com';
+window.BACKEND_URL = BACKEND_URL;
+if (!window.CRKH) window.CRKH = {};
+window.CRKH.backendUrl = BACKEND_URL;
+
 // Resource Catalog Metadata Map (Zero Broken IDs)
 const RESOURCE_CATALOG = {
   '1': { title: 'DBMS Textbook - Navathe & Elmasri (7th Ed)', owner: 'Bharath Kumar', category: 'TEXTBOOK', mode: 'Item Exchange', dates: '2026-10-05 to 2026-11-19', location: 'Central Campus Library, 2nd Floor' },

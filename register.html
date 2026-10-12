@@ -182,7 +182,7 @@
             };
 
             try {
-                const res = await fetch('/api/auth/register', {
+                const res = await fetch((window.BACKEND_URL || 'https://campus-resource-knowledge-hub-3.onrender.com') + '/api/auth/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)

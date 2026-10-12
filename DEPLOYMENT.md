@@ -112,7 +112,7 @@ PORT=10000
 5. Go to the **Environment** tab:
    - Click **Add from .env** and paste the environment variables above.
 6. Click **Deploy Web Service**.
-7. Once deployed, Render will provide a public HTTPS URL (e.g. `https://crkh-backend.onrender.com`).
+7. Once deployed, Render will provide a public HTTPS URL (e.g. `https://campus-resource-knowledge-hub-3.onrender.com`).
 
 ---
 
