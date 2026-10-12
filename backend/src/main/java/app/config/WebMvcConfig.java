@@ -25,16 +25,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
         registry.addResourceHandler("/images/**")
                 .addResourceLocations(
-                        "file:D:/CRKH/frontend/images/", "classpath:/static/images/",
-                        "file:src/main/resources/static/images/",
-                        "file:D:/CRKH/backend/src/main/resources/static/images/"
+                        "classpath:/static/images/",
+                        "file:src/main/resources/static/images/"
                 );
 
         registry.addResourceHandler("/css/**")
-                .addResourceLocations("file:D:/CRKH/frontend/css/", "classpath:/static/css/", "file:src/main/resources/static/css/");
+                .addResourceLocations("classpath:/static/css/", "file:src/main/resources/static/css/");
 
         registry.addResourceHandler("/js/**")
-                .addResourceLocations("file:D:/CRKH/frontend/js/", "classpath:/static/js/", "file:src/main/resources/static/js/");
+                .addResourceLocations("classpath:/static/js/", "file:src/main/resources/static/js/");
 
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/");

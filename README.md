@@ -86,32 +86,41 @@ graph TD
 ## 📁 Repository Structure
 
 ```
-Campus-Resource-CRKH-/
-├── backend/
+Campus-Resource-Knowledge-Hub/
+├── backend/                     # Spring Boot 3 Java Backend
 │   ├── src/main/java/app/
 │   │   ├── config/              # WebMvcConfig, Security, DataInitializer
-│   │   ├── controller/          # WebController, ApiControllers
-│   │   ├── dto/                 # Resource, Borrowing, User Data Transfer Objects
+│   │   ├── controller/          # REST API & Web Controllers
+│   │   ├── dto/                 # Request/Response Data Transfer Objects
 │   │   ├── entity/              # JPA Entities (Resource, User, Borrowing, etc.)
 │   │   ├── repository/          # Spring Data JPA Repositories
 │   │   └── service/             # MatchingEngine, QRService, ResourceService
 │   ├── src/main/resources/
-│   │   ├── static/              # CSS (Liquid Glass), JS, Product Images
-│   │   ├── templates/           # Thymeleaf HTML Templates
-│   │   └── application.properties
-│   ├── uploads/                 # Storage for documents and products
-│   ├── Dockerfile               # Backend production Dockerfile
-│   └── pom.xml                  # Maven dependencies
-├── frontend/                    # Source templates, stylesheets, and scripts
-│   ├── templates_src/           # Raw Thymeleaf source templates
-│   ├── css/                     # Liquid Glass stylesheet
-│   └── js/                      # Main client script
-├── docker-compose.yml           # Production multi-container orchestrator
-├── Dockerfile                   # Root Docker build definition
+│   │   ├── static/              # Backend static resources & product illustrations
+│   │   ├── templates/           # Server-side HTML templates
+│   │   └── application.properties # Aiven MySQL, JWT, & matching config
+│   ├── uploads/                 # Local directory for uploaded docs & items
+│   ├── Dockerfile               # Backend Dockerfile for containerized deployment
+│   └── pom.xml                  # Maven dependencies & build configuration
+├── frontend/                    # Modern React (Vite) Single Page Application
+│   ├── public/                  # Public static assets & product visuals
+│   ├── src/
+│   │   ├── components/          # Reusable UI components & modals
+│   │   ├── context/             # AuthContext & ToastContext
+│   │   ├── pages/               # React route pages (Home, Resources, Dashboard, etc.)
+│   │   ├── services/api.js      # Centralized REST API client
+│   │   ├── App.jsx              # Routing & application shell
+│   │   └── index.css            # Modern design system & CSS variables
+│   ├── package.json             # Frontend NPM scripts & dependencies
+│   └── vite.config.js           # Vite build & backend proxy configuration
+├── docker-compose.yml           # Multi-container orchestration (MySQL + Backend)
+├── Dockerfile                   # Root Dockerfile for cloud builds (Render/Railway)
+├── package.json                 # Root script runner for monorepo operations
+├── vercel.json                  # Vercel deployment configuration for frontend
+├── render.yaml                  # Render deployment blueprint definition
 ├── railway.json                 # Railway cloud deployment configuration
-├── render.yaml                  # Render cloud blueprint definition
 ├── DEPLOYMENT.md                # Multi-platform deployment manual
-└── start-project.bat            # Windows 1-click local launcher
+└── start-project.bat            # 1-Click local development launcher
 ```
 
 ---
