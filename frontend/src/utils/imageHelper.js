@@ -9,6 +9,11 @@ export function getResourceImageUrl(resource) {
   const title = (resource.title || '').toLowerCase();
   const category = resource.category || '';
 
+  // Keyword-based matching for known items takes precedence
+  if (title.includes('webcam') || title.includes('camera') || title.includes('c920')) {
+    return '/images/products/webcam.jpg';
+  }
+
   // If a valid custom URL is provided
   if (rawUrl && typeof rawUrl === 'string' && rawUrl.trim()) {
     const trimmed = rawUrl.trim();
@@ -17,11 +22,6 @@ export function getResourceImageUrl(resource) {
     if (trimmed.startsWith('/uploads/products/')) return trimmed;
     if (trimmed.startsWith('/images/')) return `/images/products/${trimmed.replace('/images/', '')}`;
     if (trimmed.startsWith('images/products/')) return `/${trimmed}`;
-  }
-
-  // Keyword-based fallback for specific items
-  if (title.includes('webcam') || title.includes('camera') || title.includes('c920')) {
-    return '/images/products/webcam.jpg';
   }
   if (title.includes('casio')) return '/images/products/casio_calculator.jpg';
   if (title.includes('ti-84') || title.includes('graphing')) return '/images/products/ti84_calculator.jpg';
