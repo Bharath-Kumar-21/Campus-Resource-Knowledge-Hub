@@ -29,6 +29,7 @@ export default function ResourcesPage() {
   const { success, error } = useToast();
 
   const [resources, setResources] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [categoryFilter, setCategoryFilter] = useState('ALL');
   const [modeFilter, setModeFilter] = useState('ALL');
@@ -48,8 +49,15 @@ export default function ResourcesPage() {
   const [creating, setCreating] = useState(false);
 
   const loadResources = async () => {
-    const list = await api.getResources();
-    setResources(list);
+    setLoading(true);
+    try {
+      const list = await api.getResources();
+      setResources(list || []);
+    } catch (err) {
+      console.error('Failed to load resources:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -57,12 +65,24 @@ export default function ResourcesPage() {
   }, []);
 
   const filtered = resources.filter(r => {
-    const matchCat = categoryFilter === 'ALL' || r.category === categoryFilter;
-    const matchMode = modeFilter === 'ALL' || r.sharingMode === modeFilter;
-    const matchQ = !searchQuery ||
-      r.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      r.pickupLocation?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      r.ownerName?.toLowerCase().includes(searchQuery.toLowerCase());
+    const rCat = (r.category || '').toUpperCase();
+    const matchCat = categoryFilter === 'ALL' || rCat === categoryFilter;
+
+    const rMode = (r.sharingMode || '').toLowerCase();
+    const fMode = modeFilter.toLowerCase();
+    const matchMode = modeFilter === 'ALL' ||
+      r.sharingMode === modeFilter ||
+      r.sharingType === modeFilter ||
+      rMode === fMode;
+
+    const q = searchQuery.trim().toLowerCase();
+    const matchQ = !q ||
+      (r.title && r.title.toLowerCase().includes(q)) ||
+      (r.description && r.description.toLowerCase().includes(q)) ||
+      (r.pickupLocation && r.pickupLocation.toLowerCase().includes(q)) ||
+      (r.location && r.location.toLowerCase().includes(q)) ||
+      (r.ownerName && r.ownerName.toLowerCase().includes(q));
+
     return matchCat && matchMode && matchQ;
   });
 
@@ -106,11 +126,13 @@ export default function ResourcesPage() {
       case 'TEXTBOOK': return '/images/products/dbms_book.jpg';
       case 'CALCULATOR': return '/images/products/casio_calculator.jpg';
       case 'ADAPTER': return '/images/products/usbc_adapter.jpg';
+      case 'HDMI_CABLE': return '/images/products/hdmi_cable.jpg';
       case 'LAB_EQUIPMENT': return '/images/products/arduino_kit.jpg';
       case 'NOTES': return '/images/products/network_notes.jpg';
       case 'STUDY_MATERIALS': return '/images/products/java_book.jpg';
       case 'ELECTRONICS': return '/images/products/sony_headphones.jpg';
       case 'SPORTS': return '/images/products/basketball.jpg';
+      case 'HOSTEL_ITEMS': return '/images/products/desk_lamp.jpg';
       default: return '/images/products/breadboard_lab.jpg';
     }
   };
@@ -135,13 +157,24 @@ export default function ResourcesPage() {
           </p>
         </div>
 
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className="btn btn-primary"
-        >
-          <PlusCircle size={18} />
-          <span>List a Resource</span>
-        </button>
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <button
+            onClick={() => loadResources()}
+            className="btn btn-secondary"
+            title="Refresh Catalog"
+            disabled={loading}
+          >
+            <RefreshCw size={16} style={{ animation: loading ? 'spin 1s linear infinite' : 'none' }} />
+            <span>{loading ? 'Syncing...' : 'Refresh'}</span>
+          </button>
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="btn btn-primary"
+          >
+            <PlusCircle size={18} />
+            <span>List a Resource</span>
+          </button>
+        </div>
       </div>
 
       {/* Filter and Search Panel */}
@@ -175,14 +208,16 @@ export default function ResourcesPage() {
               <option value="ALL">All Categories</option>
               <option value="TEXTBOOK">Textbooks</option>
               <option value="CALCULATOR">Calculators</option>
-              <option value="ADAPTER">Adapters & Cables</option>
+              <option value="ADAPTER">Adapters & Power Hubs</option>
+              <option value="HDMI_CABLE">HDMI & Display Cables</option>
               <option value="LAB_EQUIPMENT">Lab Equipment & Kits</option>
-              <option value="NOTES">Class Notes</option>
+              <option value="NOTES">Class Notes & Guides</option>
               <option value="STUDY_MATERIALS">Study Materials</option>
               <option value="ELECTRONICS">Electronics & Audio</option>
               <option value="SPORTS">Sports & Recreation</option>
               <option value="STATIONERY">Stationery & Tools</option>
               <option value="HOSTEL_ITEMS">Hostel Items</option>
+              <option value="OTHER">Other Academic Supplies</option>
             </select>
           </div>
 
@@ -222,7 +257,22 @@ export default function ResourcesPage() {
       </div>
 
       {/* Grid of Results */}
-      {filtered.length > 0 ? (
+      {loading ? (
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+          gap: '24px'
+        }}>
+          {[1, 2, 3, 4, 5, 6].map(n => (
+            <div key={n} className="glass-panel" style={{ height: '360px', padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div style={{ height: '180px', borderRadius: '14px', background: 'rgba(220, 226, 238, 0.45)', animation: 'pulse 1.5s infinite ease-in-out' }} />
+              <div style={{ height: '22px', width: '75%', borderRadius: '6px', background: 'rgba(220, 226, 238, 0.5)' }} />
+              <div style={{ height: '14px', width: '50%', borderRadius: '6px', background: 'rgba(220, 226, 238, 0.35)' }} />
+              <div style={{ height: '14px', width: '60%', borderRadius: '6px', background: 'rgba(220, 226, 238, 0.35)', marginTop: 'auto' }} />
+            </div>
+          ))}
+        </div>
+      ) : filtered.length > 0 ? (
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
@@ -241,18 +291,35 @@ export default function ResourcesPage() {
         <div className="glass-panel" style={{ padding: '60px 24px', textAlign: 'center' }}>
           <Layers size={48} color="#98A2B3" style={{ margin: '0 auto 16px' }} />
           <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#1D232F' }}>
-            No resources match your filters
+            {resources.length === 0 ? 'No resources available in the catalog yet' : 'No resources match your filters'}
           </h3>
           <p style={{ fontSize: '0.88rem', color: '#647084', marginTop: '6px' }}>
-            Try broadening your search term or selecting "All Categories"
+            {resources.length === 0
+              ? 'Click below to reload the verified campus catalog or list a new item!'
+              : 'Try broadening your search term or selecting "All Categories"'}
           </p>
-          <button
-            onClick={() => { setCategoryFilter('ALL'); setModeFilter('ALL'); setSearchQuery(''); }}
-            className="btn btn-primary btn-sm"
-            style={{ marginTop: '16px' }}
-          >
-            Clear All Filters
-          </button>
+          <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginTop: '16px', flexWrap: 'wrap' }}>
+            <button
+              onClick={() => {
+                setCategoryFilter('ALL');
+                setModeFilter('ALL');
+                setSearchQuery('');
+                if (resources.length === 0) loadResources();
+              }}
+              className="btn btn-primary btn-sm"
+            >
+              {resources.length === 0 ? 'Reload Catalog' : 'Clear All Filters'}
+            </button>
+            {resources.length === 0 && (
+              <button
+                onClick={() => setShowCreateModal(true)}
+                className="btn btn-secondary btn-sm"
+              >
+                <PlusCircle size={15} />
+                <span>List a Resource</span>
+              </button>
+            )}
+          </div>
         </div>
       )}
 
@@ -305,14 +372,16 @@ export default function ResourcesPage() {
                   >
                     <option value="TEXTBOOK">Textbook</option>
                     <option value="CALCULATOR">Calculator</option>
-                    <option value="ADAPTER">Adapter / Cable</option>
-                    <option value="LAB_EQUIPMENT">Lab Equipment</option>
-                    <option value="NOTES">Notes</option>
+                    <option value="ADAPTER">Adapter / Power Hub</option>
+                    <option value="HDMI_CABLE">HDMI / Video Cable</option>
+                    <option value="LAB_EQUIPMENT">Lab Equipment & Kit</option>
+                    <option value="NOTES">Notes & Guides</option>
                     <option value="STUDY_MATERIALS">Study Materials</option>
-                    <option value="ELECTRONICS">Electronics</option>
-                    <option value="SPORTS">Sports</option>
-                    <option value="STATIONERY">Stationery</option>
+                    <option value="ELECTRONICS">Electronics & Audio</option>
+                    <option value="SPORTS">Sports Equipment</option>
+                    <option value="STATIONERY">Stationery & Tools</option>
                     <option value="HOSTEL_ITEMS">Hostel Items</option>
+                    <option value="OTHER">Other Academic Supplies</option>
                   </select>
                 </div>
                 <div>

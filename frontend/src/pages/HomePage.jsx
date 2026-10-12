@@ -49,7 +49,11 @@ export default function HomePage() {
 
   const filteredResources = resources.filter(r => {
     const matchesCategory = selectedCategory === 'ALL' || r.category === selectedCategory;
-    const matchesSearch = !searchQuery || r.title.toLowerCase().includes(searchQuery.toLowerCase()) || r.pickupLocation.toLowerCase().includes(searchQuery.toLowerCase());
+    const q = searchQuery.trim().toLowerCase();
+    const matchesSearch = !q ||
+      (r.title && r.title.toLowerCase().includes(q)) ||
+      (r.pickupLocation && r.pickupLocation.toLowerCase().includes(q)) ||
+      (r.location && r.location.toLowerCase().includes(q));
     return matchesCategory && matchesSearch;
   });
 

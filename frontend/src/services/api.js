@@ -380,7 +380,12 @@ function getAuthHeaders() {
 function getStored(key, defaultValue) {
   try {
     const raw = localStorage.getItem('CRKH_STORE_' + key);
-    return raw ? JSON.parse(raw) : defaultValue;
+    if (!raw) return defaultValue;
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed) && parsed.length === 0 && defaultValue) {
+      return defaultValue;
+    }
+    return parsed ?? defaultValue;
   } catch (e) {
     return defaultValue;
   }
@@ -390,6 +395,80 @@ function setStored(key, value) {
   try {
     localStorage.setItem('CRKH_STORE_' + key, JSON.stringify(value));
   } catch (e) {}
+}
+
+export function normalizeResource(item) {
+  if (!item) return item;
+
+  const modeToFriendly = {
+    'ITEM_EXCHANGE': 'Item Exchange',
+    'FREE_BORROW': 'Free Borrow',
+    'SECURITY_PLEDGE': 'Security Pledge',
+    'SKILL_SWAP': 'Skill Swap',
+    'Item Exchange': 'Item Exchange',
+    'Free Borrow': 'Free Borrow',
+    'Security Pledge': 'Security Pledge',
+    'Skill Swap': 'Skill Swap'
+  };
+
+  const modeToEnum = {
+    'Item Exchange': 'ITEM_EXCHANGE',
+    'Free Borrow': 'FREE_BORROW',
+    'Security Pledge': 'SECURITY_PLEDGE',
+    'Skill Swap': 'SKILL_SWAP',
+    'ITEM_EXCHANGE': 'ITEM_EXCHANGE',
+    'FREE_BORROW': 'FREE_BORROW',
+    'SECURITY_PLEDGE': 'SECURITY_PLEDGE',
+    'SKILL_SWAP': 'SKILL_SWAP'
+  };
+
+  const sharingMode = modeToFriendly[item.sharingMode] ||
+    modeToFriendly[item.sharingType] ||
+    item.sharingMode ||
+    item.sharingType ||
+    'Free Borrow';
+
+  const sharingType = modeToEnum[item.sharingType] ||
+    modeToEnum[item.sharingMode] ||
+    'FREE_BORROW';
+
+  const pickupLocation = item.pickupLocation || item.location || 'Central Campus Library';
+  const location = item.location || item.pickupLocation || pickupLocation;
+
+  const availableFrom = item.availableFrom || item.availabilityFrom || new Date().toISOString().split('T')[0];
+  const availabilityFrom = item.availabilityFrom || item.availableFrom || availableFrom;
+
+  const availableUntil = item.availableUntil || item.availabilityTo || '2026-11-30';
+  const availabilityTo = item.availabilityTo || item.availableUntil || availableUntil;
+
+  const condition = (item.condition || item.itemCondition || 'EXCELLENT').toUpperCase();
+  const itemCondition = item.itemCondition || item.condition || 'Good';
+
+  const category = (item.category || 'OTHER').toUpperCase();
+
+  return {
+    ...item,
+    id: item.id,
+    title: item.title || 'Campus Academic Supply',
+    description: item.description || '',
+    category,
+    sharingMode,
+    sharingType,
+    pickupLocation,
+    location,
+    availableFrom,
+    availabilityFrom,
+    availableUntil,
+    availabilityTo,
+    condition,
+    itemCondition,
+    status: item.status || 'AVAILABLE',
+    imageUrl: item.imageUrl || '/images/products/default.svg',
+    ownerId: item.ownerId || 1,
+    ownerName: item.ownerName || 'Campus Student',
+    ownerReputation: item.ownerReputation || 100,
+    ownerEmail: item.ownerEmail || 'student@college.edu'
+  };
 }
 
 export const api = {
@@ -458,48 +537,101 @@ export const api = {
   // Resources
   async getResources() {
     try {
-      const res = await fetch(`${API_BASE}/resources`, { headers: getAuthHeaders() });
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 6000);
+      const res = await fetch(`${API_BASE}/resources`, {
+        headers: getAuthHeaders(),
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+
       if (res.ok) {
         const json = await res.json();
         const data = json.data || json;
-        if (Array.isArray(data) && data.length > 0) return data;
+        if (Array.isArray(data) && data.length > 0) {
+          const normalized = data.map(normalizeResource);
+          setStored('RESOURCES', normalized);
+          return normalized;
+        }
       }
-    } catch (e) {}
-    return getStored('RESOURCES', SEED_RESOURCES);
+    } catch (e) {
+      console.warn('Backend resources fetch unavailable, loading seed store:', e);
+    }
+
+    const stored = getStored('RESOURCES', null);
+    if (Array.isArray(stored) && stored.length > 0) {
+      return stored.map(normalizeResource);
+    }
+
+    const seedNormalized = SEED_RESOURCES.map(normalizeResource);
+    setStored('RESOURCES', seedNormalized);
+    return seedNormalized;
   },
 
   async getResourceById(id) {
     try {
-      const res = await fetch(`${API_BASE}/resources/${id}`, { headers: getAuthHeaders() });
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 6000);
+      const res = await fetch(`${API_BASE}/resources/${id}`, {
+        headers: getAuthHeaders(),
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+
       if (res.ok) {
         const json = await res.json();
-        return json.data || json;
+        const item = json.data || json;
+        if (item) return normalizeResource(item);
       }
     } catch (e) {}
-    const list = getStored('RESOURCES', SEED_RESOURCES);
+
+    const list = await this.getResources();
     return list.find(r => String(r.id) === String(id)) || null;
   },
 
   async createResource(resourceData) {
+    const normalized = normalizeResource(resourceData);
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
       const res = await fetch(`${API_BASE}/resources`, {
         method: 'POST',
         headers: getAuthHeaders(),
-        body: JSON.stringify(resourceData)
+        body: JSON.stringify({
+          title: normalized.title,
+          description: normalized.description || '',
+          category: normalized.category,
+          location: normalized.location,
+          availabilityFrom: normalized.availabilityFrom,
+          availabilityTo: normalized.availabilityTo,
+          imageUrl: normalized.imageUrl,
+          itemCondition: normalized.itemCondition,
+          sharingType: normalized.sharingType,
+          exchangePreference: resourceData.exchangePreference || '',
+          satisfactionTerms: resourceData.satisfactionTerms || ''
+        }),
+        signal: controller.signal
       });
+      clearTimeout(timeoutId);
+
       if (res.ok) {
         const json = await res.json();
-        return json.data || json;
+        const created = normalizeResource(json.data || json);
+        const list = getStored('RESOURCES', SEED_RESOURCES);
+        setStored('RESOURCES', [created, ...(Array.isArray(list) ? list : [])]);
+        return created;
       }
-    } catch (e) {}
+    } catch (e) {
+      console.warn('Backend createResource failed, persisting locally:', e);
+    }
+
     const list = getStored('RESOURCES', SEED_RESOURCES);
     const newRes = {
-      ...resourceData,
+      ...normalized,
       id: Date.now(),
-      status: 'AVAILABLE',
-      imageUrl: resourceData.imageUrl || '/images/products/default.svg'
+      status: 'AVAILABLE'
     };
-    const updated = [newRes, ...list];
+    const updated = [newRes, ...(Array.isArray(list) ? list : [])];
     setStored('RESOURCES', updated);
     return newRes;
   },

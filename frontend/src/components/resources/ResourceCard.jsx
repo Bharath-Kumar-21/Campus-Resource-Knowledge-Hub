@@ -57,14 +57,14 @@ export default function ResourceCard({ resource, onQuickView, onBorrow }) {
         <div style={{ position: 'absolute', top: '12px', left: '12px' }}>
           <span className={`badge ${getModeBadgeClass(resource.sharingMode)}`}>
             {getModeIcon(resource.sharingMode)}
-            <span>{resource.sharingMode}</span>
+            <span>{resource.sharingMode || 'Free Borrow'}</span>
           </span>
         </div>
 
         {/* Category pill on top right */}
         <div style={{ position: 'absolute', top: '12px', right: '12px' }}>
           <span className="badge badge-category" style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)' }}>
-            {resource.category.replace('_', ' ')}
+            {(resource.category || 'ACADEMIC').replace(/_/g, ' ')}
           </span>
         </div>
       </div>
@@ -89,12 +89,12 @@ export default function ResourceCard({ resource, onQuickView, onBorrow }) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.82rem', color: '#647084' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <Calendar size={14} color="#6C8EF5" />
-            <span>{resource.availableFrom} to {resource.availableUntil}</span>
+            <span>{resource.availableFrom || resource.availabilityFrom || 'Available'} to {resource.availableUntil || resource.availabilityTo || 'Ongoing'}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <MapPin size={14} color="#9B8AFB" />
             <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-              {resource.pickupLocation}
+              {resource.pickupLocation || resource.location || 'Central Campus Library'}
             </span>
           </div>
         </div>

@@ -56,13 +56,13 @@ export default function BorrowModal({ resource, onClose, onSuccess }) {
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '20px' }}>
           <div>
             <span className="badge badge-mode-exchange" style={{ marginBottom: '8px' }}>
-              {resource.sharingMode}
+              {resource.sharingMode || 'Free Borrow'}
             </span>
             <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#1D232F', lineHeight: 1.3 }}>
               Request to Borrow Item
             </h2>
             <p style={{ fontSize: '0.85rem', color: '#647084', marginTop: '4px' }}>
-              Owner: <strong>{resource.ownerName}</strong> (Reputation: {resource.ownerReputation} pts)
+              Owner: <strong>{resource.ownerName || 'Campus Student'}</strong> (Reputation: {resource.ownerReputation || 100} pts)
             </p>
           </div>
           <button
@@ -104,7 +104,7 @@ export default function BorrowModal({ resource, onClose, onSuccess }) {
             <div style={{ fontWeight: 700, fontSize: '0.92rem', color: '#1D232F' }}>{resource.title}</div>
             <div style={{ fontSize: '0.8rem', color: '#647084', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
               <MapPin size={13} color="#6C8EF5" />
-              <span>{resource.pickupLocation}</span>
+              <span>{resource.pickupLocation || resource.location || 'Central Campus Library'}</span>
             </div>
           </div>
         </div>

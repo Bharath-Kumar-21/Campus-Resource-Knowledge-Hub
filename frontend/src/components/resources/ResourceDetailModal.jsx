@@ -71,7 +71,7 @@ export default function ResourceDetailModal({ resource, onClose, onBorrow }) {
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px', fontSize: '0.88rem', fontWeight: 600, color: '#1D232F' }}>
                 <Calendar size={15} color="#6C8EF5" />
-                <span>{resource.availableFrom} to {resource.availableUntil}</span>
+                <span>{resource.availableFrom || resource.availabilityFrom || 'Available'} to {resource.availableUntil || resource.availabilityTo || 'Ongoing'}</span>
               </div>
             </div>
 
@@ -81,7 +81,7 @@ export default function ResourceDetailModal({ resource, onClose, onBorrow }) {
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px', fontSize: '0.88rem', fontWeight: 600, color: '#1D232F' }}>
                 <MapPin size={15} color="#9B8AFB" />
-                <span>{resource.pickupLocation}</span>
+                <span>{resource.pickupLocation || resource.location || 'Central Campus Library'}</span>
               </div>
             </div>
 
