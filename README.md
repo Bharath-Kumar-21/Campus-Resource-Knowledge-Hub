@@ -60,24 +60,24 @@ $$\text{Score} = 0.30 \times \text{Relevance} + 0.20 \times \text{Location} + 0.
 ## 🏗️ System Architecture
 
 ```mermaid
-flowchart TD
-    User(["Student / Faculty / Admin"]) -->|"HTTPS / Browser"| UI["Thymeleaf + Apple Liquid Glass UI"]
+graph TD
+    User([Student / Faculty / Admin]) -->|HTTPS / Browser| UI[Thymeleaf + Apple Liquid Glass UI]
     
-    subgraph Backend ["Spring Boot Backend (Port 8080)"]
-        UI --> Controller["Spring MVC Controllers & REST APIs"]
-        Controller --> Security["Spring Security & Session Auth"]
-        Security --> Services["Core Business Logic Services"]
+    subgraph Spring Boot Backend (Port 8080)
+        UI --> Controller[Spring MVC Controllers & REST APIs]
+        Controller --> Security[Spring Security & Session Auth]
+        Security --> Services[Core Business Logic Services]
         
-        Services --> MatchEngine["6-Factor Weighted Matching Engine"]
-        Services --> QRService["Cryptographic ZXing QR Token Engine"]
-        Services --> VaultService["Private Knowledge Vault Manager"]
-        Services --> ResourceService["Resource & Exchange Lifecycle"]
+        Services --> MatchEngine[6-Factor Weighted Matching Engine]
+        Services --> QRService[Cryptographic ZXing QR Token Engine]
+        Services --> VaultService[Private Knowledge Vault Manager]
+        Services --> ResourceService[Resource & Exchange Lifecycle]
     end
     
-    subgraph Storage ["Data & Storage Layer"]
-        Services --> JPA["Spring Data JPA / Hibernate"]
-        JPA --> MySQL[("MySQL 8.0 Database")]
-        VaultService --> LocalDisk["Persistent Upload Volume /uploads"]
+    subgraph Data & Storage Layer
+        Services --> JPA[Spring Data JPA / Hibernate]
+        JPA --> MySQL[(MySQL 8.0 Database)]
+        VaultService --> LocalDisk[Persistent Upload Volume /uploads]
     end
 ```
 
@@ -120,12 +120,12 @@ Campus-Resource-CRKH-/
 
 ### Prerequisites
 - **Java 21** (JDK 21)
-- **MySQL 8.0**
+- **Aiven Cloud MySQL Database** (defaultdb)
 - **Git**
 
 ### Method A: One-Click Windows Launcher
-Double-click `start-project.bat` from the root folder. It will:
-1. Verify MySQL on port 3306.
+Double-click `run-crkh.bat` or `start-project.bat`. It will:
+1. Connect directly to the Aiven Cloud MySQL Database (`mysql-2c01a104-bk8143116177-55d6.e.aivencloud.com:27465`).
 2. Build and start Spring Boot on port 8080.
 3. Automatically open `http://localhost:8080` in your browser.
 
@@ -135,8 +135,8 @@ Double-click `start-project.bat` from the root folder. It will:
 git clone https://github.com/Bharath-Kumar-21/Campus-Resource-CRKH-.git
 cd Campus-Resource-CRKH-
 
-# 2. Start MySQL and ensure crkh_db exists
-# (default credentials: root / root)
+# 2. Cloud Database is pre-configured in application.properties
+# (Aiven Cloud MySQL: defaultdb)
 
 # 3. Build & Run Backend
 cd backend

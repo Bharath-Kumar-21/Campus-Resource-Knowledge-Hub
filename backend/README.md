@@ -120,12 +120,12 @@ Campus-Resource-CRKH-/
 
 ### Prerequisites
 - **Java 21** (JDK 21)
-- **MySQL 8.0**
+- **Aiven Cloud MySQL Database** (defaultdb)
 - **Git**
 
 ### Method A: One-Click Windows Launcher
-Double-click `start-project.bat` from the root folder. It will:
-1. Verify MySQL on port 3306.
+Double-click `run-crkh.bat` or `start-project.bat`. It will:
+1. Connect directly to the Aiven Cloud MySQL Database (`mysql-2c01a104-bk8143116177-55d6.e.aivencloud.com:27465`).
 2. Build and start Spring Boot on port 8080.
 3. Automatically open `http://localhost:8080` in your browser.
 
@@ -135,8 +135,8 @@ Double-click `start-project.bat` from the root folder. It will:
 git clone https://github.com/Bharath-Kumar-21/Campus-Resource-CRKH-.git
 cd Campus-Resource-CRKH-
 
-# 2. Start MySQL and ensure crkh_db exists
-# (default credentials: root / root)
+# 2. Cloud Database is pre-configured in application.properties
+# (Aiven Cloud MySQL: defaultdb)
 
 # 3. Build & Run Backend
 cd backend

@@ -1,6 +1,24 @@
 # Campus Resource & Knowledge Hub (CRKH) — Deployment Guide
 
-This guide covers deploying the CRKH platform using Docker Compose, Cloud Platforms (Railway, Render), or any Linux/Cloud VPS.
+This guide covers deploying the CRKH platform using Docker Compose, Cloud Platforms (Railway, Render), or connecting directly to managed Cloud Databases (Aiven MySQL).
+
+---
+
+## ☁️ Active Cloud Database Configuration (Aiven MySQL)
+
+The CRKH backend is actively configured to connect to your managed **Aiven Cloud MySQL** database with TLS encryption:
+
+- **Host**: `mysql-2c01a104-bk8143116177-55d6.e.aivencloud.com`
+- **Port**: `27465`
+- **Database**: `defaultdb`
+- **User**: `avnadmin`
+- **SSL Mode**: `REQUIRED`
+- **JDBC Connection String**:
+  ```
+  jdbc:mysql://mysql-2c01a104-bk8143116177-55d6.e.aivencloud.com:27465/defaultdb?sslMode=REQUIRED&serverTimezone=UTC&allowPublicKeyRetrieval=true
+  ```
+
+All previous local tables, users, resources, and borrowings have been migrated to this cloud database. Local MySQL on port 3306 is no longer needed.
 
 ---
 
@@ -59,17 +77,42 @@ Railway provides 1-click database provisioning and Docker deployment with a publ
 
 ---
 
-## Option 3: Deploy to Render.com
+## Option 3: Deploy to Render.com (Web Service)
 
-Render offers free web services and managed databases using the included `render.yaml` blueprint.
+Deploy your Spring Boot backend to Render using Docker or Native Java runtime connected to Aiven Cloud MySQL.
 
-### Steps
-1. Push your project to GitHub.
-2. Sign in to [Render.com](https://render.com/).
-3. Click **New** → **Blueprint**.
-4. Connect your GitHub repository.
-5. Render reads `render.yaml` and provisions both the MySQL database and the Docker web service automatically.
-6. Once deployed, open your `.onrender.com` public URL.
+### 🔑 Environment Variables for Render
+When creating your **Web Service** on Render, add these in the **Environment** tab (you can click **"Add from .env"** and paste this block directly):
+
+```env
+DB_URL=jdbc:mysql://mysql-2c01a104-bk8143116177-55d6.e.aivencloud.com:27465/defaultdb?sslMode=REQUIRED&serverTimezone=UTC&allowPublicKeyRetrieval=true
+DB_USERNAME=avnadmin
+DB_PASSWORD=<YOUR_AIVEN_DB_PASSWORD>
+JWT_SECRET=404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+JAVA_TOOL_OPTIONS=-Xmx384m -Xms128m
+PORT=10000
+```
+
+### Steps to Deploy:
+1. Push your repository to **GitHub**:
+   ```bash
+   git add .
+   git commit -m "Configure cloud database and Render deployment"
+   git push
+   ```
+2. In [Render.com Dashboard](https://dashboard.render.com/), click **New +** → **Web Service**.
+3. Connect your GitHub repository.
+4. Configure service settings:
+   - **Name**: `crkh-backend`
+   - **Region**: Oregon (US West) or closest region
+   - **Branch**: `main`
+   - **Root Directory**: leave blank (or `backend` if deploying subfolder)
+   - **Runtime**: **Docker** (DockerfilePath: `backend/Dockerfile`, Docker Context: `backend`)
+   - **Instance Type**: **Free**
+5. Go to the **Environment** tab:
+   - Click **Add from .env** and paste the environment variables above.
+6. Click **Deploy Web Service**.
+7. Once deployed, Render will provide a public HTTPS URL (e.g. `https://crkh-backend.onrender.com`).
 
 ---
 

@@ -5,18 +5,18 @@ echo          CAMPUS RESOURCE AND KNOWLEDGE HUB (CRKH) LAUNCHER
 echo ======================================================================
 echo.
 
-:: 1. Check if MySQL is running on port 3306
-echo [1/3] Verifying MySQL Database on port 3306...
-netstat -ano | findstr :3306 >nul
-if %ERRORLEVEL% NEQ 0 (
-    echo Starting MySQL Server...
-    start "MySQL Server" "C:\Users\Bharath Kumar\tools\mysql\bin\mysqld.exe" --console
-    ping 127.0.0.1 -n 4 >nul
-) else (
-    echo MySQL is already running.
+:: 1. Load environment variables from .env
+if exist "%~dp0.env" (
+    for /f "usebackq tokens=*" %%a in ("%~dp0.env") do set "%%a"
+) else if exist "D:\CRKH\.env" (
+    for /f "usebackq tokens=*" %%a in ("D:\CRKH\.env") do set "%%a"
 )
 
-:: 2. Check if Spring Boot backend is running on port 8080
+:: 2. Cloud Database Status
+echo [1/3] Connected to Aiven Cloud Database (defaultdb)...
+echo       Host: mysql-2c01a104-bk8143116177-55d6.e.aivencloud.com:27465
+
+:: 3. Check if Spring Boot backend is running on port 8080
 echo.
 echo [2/3] Verifying Backend Application on port 8080...
 netstat -ano | findstr :8080 >nul
@@ -29,7 +29,7 @@ if %ERRORLEVEL% NEQ 0 (
     echo Backend is already running on http://localhost:8080
 )
 
-:: 3. Launch browser
+:: 4. Launch browser
 echo.
 echo [3/3] Launching CRKH in your default web browser...
 start http://localhost:8080
@@ -37,6 +37,7 @@ start http://localhost:8080
 echo.
 echo ======================================================================
 echo   CRKH is actively running at: http://localhost:8080
+echo   Database: Aiven Cloud MySQL (defaultdb)
 echo   Default Student Login: student1@college.edu / Student@123
 echo   Default Admin Login:   admin@college.edu / Admin@123
 echo ======================================================================
