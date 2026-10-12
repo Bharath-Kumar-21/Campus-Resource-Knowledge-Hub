@@ -17,6 +17,17 @@
                 return;
             }
 
+            // 1b. Handover Verification (/handover/:id or /handover)
+            var hMatch = path.match(/\/handover\/(\d+)\/?$/);
+            if (hMatch && hMatch[1]) {
+                window.location.replace('/handover.html?id=' + hMatch[1] + (search ? '&' + search.substring(1) : ''));
+                return;
+            }
+            if (path.indexOf('/handover') !== -1) {
+                window.location.replace('/handover.html' + search);
+                return;
+            }
+
             // 2. Resource Details (/resources/:id)
             var match = path.match(/\/resources\/(\d+)\/?$/);
             if (match && match[1]) {
